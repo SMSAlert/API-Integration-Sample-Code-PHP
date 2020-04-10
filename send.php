@@ -1,69 +1,65 @@
 <?php
-include_once('classes/Smsalert.php');
 
-$apikey='';       // write your apikey in between ''
-$senderid='';			 // write your senderid in between ''
-$route='';               // write your route in between ''
-$username = '';              // write your username in between ''
-$pass='';					 // write your pass in between ''
+include("smsalert/classes/Smsalert.php");
+
+$apikey='5e886b523c74c';     // write your apikey in between ''
+$senderid='VIEWIT';			 // write your senderid in between ''
+$route='demo';               // write your route in between ''
+$username = 'Subashbist';    // write your username in between ''
+$pass='SmsAlert@123';		 // write your pass in between ''
 $smsalert = (new Smsalert()) 
-				->SetApiKey($apikey)
-               	->SetUsername($username)
-                ->SetRoute($route)
-                ->SetPassword($pass)
-                ->SetSender($senderid);
+				->setApiKey($apikey)
+               	->setUsername($username)
+                ->setRoute($route)
+                ->setPassword($pass)
+                ->setSender($senderid);
 
 //======== for send sms ================
 $numbers='8010551055'; //enter the number on which text to be messaged
-
-$message=" other new Message From Smsalert Services"; // write your msg here between ""
-
-$result = $smsalert->send($numbers,$message);
-
+$message=" New Other Messages"; // write your msg here between ""
+$schedule = "2020-04-10 2:53" ;  // write schedule date and time here between ""    
+$result = $smsalert->send($numbers,$message); // For Send Sms
+$result = $smsalert->send($numbers,$message,$schedule); // For Schedule Sms
 
 //========== for senderid list =============
- $result = $smsalert->getSenderid();
+ $result = $smsalert->getSenderId();
 
 //=========== for get user profile===========
- $result = $smsalert->getUserProfile();
-
+$result = $smsalert->getUserProfile();
 
 //=========== For Get Group List  ============
- $result = $smsalert->getGroupList();
+$result = $smsalert->getGroupList();
 
 //========== For Get Contact List ===========
- $result = $smsalert->getContactList();       
-
+$groupid='2371';
+$result = $smsalert->getContactList($groupid=null);      
 
 //============for Set Schedule Sms ===========
-  $mobileno='9599162608'; //enter the number on which text to be messaged
-  $text=" other new Message From Smsalert Services"; // write your msg here between "" 
-  $schedule = "2020-04-09 5:49" ;              
-  $result = $smsalert->ScheduleSms($mobileno,$text,$schedule);    
+$mobileno='8010551055'; //enter the number between ""
+$text=" other new Message From Smsalert Services"; // write your msg here between "" 
+$schedule = "2020-04-09 5:49" ;  // write schedule date and time here between ""             
+$result = $smsalert->scheduleSms($mobileno,$text,$schedule);    
 
 //============ For send sms using xml ==============
- $datas = array(
- 			array(
- 				'number'=>'9599162608',
- 				'sms_body'=>'New Messages'
- 			)
- );
-   $result = $smsalert->send_sms_xml($datas);
-
+$datas = array(
+			array(
+				'number'=>'8010551055',	
+				'sms_body'=>'New Messages'
+			) );	
+$result = $smsalert->sendSmsXml($datas);
 
 //============ For Create Contact List  ==============
- 	$number='8010551058'; //enter the number on which text to be messaged
-    $grpname="WorKG"; // write your msg here between "" 
-    $name = "Ramesh" ;      
-    $result = $smsalert->CreateContact($grpname,$name,$number);
+$name = "Ramesh";  //enter contact member name                
+$number='8010551058'; //enter the number of member
+$grpname="mygroup"; // enter group name in which you want to add     
+$result = $smsalert->createContact($grpname,$name,$number);
 
 //============ For Create Contact List  ==============
-	 $grpname='Test'; //enter the number on which text to be messaged
-     $result = $smsalert->CreateGroup($grpname);	
+$grpname='Test'; //enter the group name which you want to create
+$result = $smsalert->createGroup($grpname);	
 
- //============ For Create Contact List  ==============
-  $result = $smsalert->getTemplateList();
-
+//============ For Create Contact List  ==============
+ $result = $smsalert->getTemplateList();
 
 if($result['status'] == 'success')
 {
