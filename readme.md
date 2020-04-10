@@ -17,17 +17,59 @@ Sms Alert Php library for sending transactional/promotional SMS, through your cu
 
 
 ## Usage 
-# //include Class file
-    include_once('classes/Smsalert.php');
+# include Class file
+    include_once('smsalert/classes/Smsalert.php');
 
-# //create object and pass arguments
-    $smsalert= new Smsalert("apikey","senderid","route");//change all 3 parameter values here
+# create object and pass arguments
+    $smsalert = (new Smsalert()) 
+				->setApiKey("apikey")
+               	->setUsername("username")
+                ->setRoute("route")
+                ->setPassword("pass")
+                ->setSender("senderid");
 
-# //Send Singal Number
+# Send Single Number
     $result = $smsalert->send("9999xxxxxx","Test Message");
 
-# //Send Multiple Number
+# Send Multiple Number
     $result = $smsalert->send("9999xxxxxx,9998xxxxxx","Test Message");
+
+# Schedule Sms For Single Number
+    $result = $smsalert->send("9999xxxxxx","Test Message","2020-04-10 2:53");
+
+# Schedule Sms For Multiple Number
+    $result = $smsalert->send("9999xxxxxx,9998xxxxxx","Test Message","2020-04-10 2:53");
+
+# Get Senderid List
+    $result = $smsalert->getSenderId();
+
+# Get User Profile
+    $result = $smsalert->getUserProfile();
+
+# Get Group List
+    $result = $smsalert->getGroupList();
+
+# Get Group Contact List
+    $result = $smsalert->getContactList("grpname");
+
+# Send Sms Xml
+	$sms_datas = array(
+			array(
+				'number'=>'8010551055',	
+				'sms_body'=>'New Messages'
+			)
+		);
+    $result = $smsalert->sendSmsXml($sms_datas);                
+
+# Create Contact In Group
+    $result = $smsalert->createContact("grpname","Demo","8010551055"); 
+
+# Create A Group
+    $result = $smsalert->createGroup("grpname");     
+
+# Get Template List
+    $result = $smsalert->getTemplateList();     
+
 
 ## Support 
 Email :  support@cozyvision.com
