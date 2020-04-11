@@ -5,93 +5,58 @@
  */
  include_once("smsalert/helper/Utility.php");
  class Smsalert{
-	private $apikey;         // declare api key of user 
 	private $sender;       // declare senderid of user 
 	private $route;         // declare route of user 
 	private $url='http://www.smsalert.co.in';   // Define url 
-	private $username;       // declare username of user
-	private $pass;           // declare password of user
+    private $authParams=array();
 
-    //function authenticate parameters
-    public function authenticateParams()
-    {
-        if(!empty($this->username) && !empty($this->pass))
-        {  
-            $params['user'] = $this->username;
-            $params['pwd'] = $this->pass;
-        }
-        else
-        {
-            $params['apikey'] = $this->apikey;
-        }
-        return $params;
-    }
-
-	// function for sending smsalert
+    // function for sending smsalert
 	public function send($mobileno,$text,$schedule=null)
-	{		
-		$url = $this->url.'/api/push.json';
-        $params=array(
-        'route'=>$this->route,
-        'sender'=>$this->sender,
-        'mobileno'=>$mobileno,
-        'text'=>$text);   
+	{	
+        $url = $this->url.'/api/push.json';
+        $params=array('sender'=>$this->sender,'mobileno'=>$mobileno,'text'=>$text);   
         if(!empty($schedule))
-        { 
-            $params['schedule'] = $schedule;   // for Schedule Sms 
+        {   
+            $params['schedule'] = $schedule; // for Schedule Sms 
         }
-        $paras = $this->authenticateParams();
-        $params = array_merge($params,$paras);
-		$Util = new Utility();
-		return $Util->invoke_Api($url,$params);
+        if(!empty($this->route))
+        {
+            $params['route']=$this->route; 
+        }
+        $params = array_merge($params,$this->authParams);
+        return Utility::invoke_api($url,$params);
     }
    
     // function for Sender Id List
     public function getSenderId()
     {
     	$url = $this->url.'/api/senderlist.json';
-    	$params = $this->authenticateParams();
-		$Util = new Utility();
-		return $Util->invoke_Api($url,$params);
+		return Utility::invoke_api($url,$this->authParams);
     }
 
     // function for user profile
     public function getUserProfile()
     {
     	$url = $this->url.'/api/user.json';
-    	$params = $this->authenticateParams();
-		$Util = new Utility();
-		return $Util->invoke_Api($url,$params);
+		return Utility::invoke_api($url,$this->authParams);
     }
 
     //function for group list
-    public function getGroupList()
+    public function getGroupList($limit=10,$page=1,$order='desc')
     {
     	$url = $this->url.'/api/grouplist.json';
-    	$params=array(
-        'limit'=>'10',
-        'page'=>'1',
-        'order'=>'desc');
-        $auth_params = $this->authenticateParams();
-        $params = array_merge($params,$auth_params);
-		$Util = new Utility();
-		return $Util->invoke_Api($url,$params);
+    	$params=array('limit'=>$limit,'page'=>$page,'order'=>$order);
+        $params = array_merge($params,$this->authParams);
+		return Utility::invoke_api($url,$params);
     }
 
     //function for contact list
     public function getContactList($groupid=null,$limit=10,$page=1,$order='desc')
     {
     	$url = $this->url.'/api/grouplist.json';
-    	$params=array(
-            'group_id'=>$groupid,
-            'limit'=>$limit,
-            'page'=>$page,
-            'order'=>$order
-        );
-        $paras = $this->authenticateParams();
-        $params = array_merge($params,$paras);
-		$Util = new Utility();
-		return $Util->invoke_Api($url,$params);
+    	$params=array('group_id'=>$groupid,'limit'=>$limit,'page'=>$page,'order'=>$order);
+        $params = array_merge($params,$this->authParams);
+		return Utility::invoke_api($url,$params);
     }
 
     //function for send sms using xml
@@ -105,8 +70,13 @@ $xmlstr = <<<XML
 XML;
         $msg = new SimpleXMLElement($xmlstr);
         $user = $msg->addChild('user');
-        $user->addAttribute('username', $this->username);
-        $user->addAttribute('password', $this->pass); 
+        if (array_key_exists("apikey",$this->authParams))
+        {
+            $user->addAttribute('apikey', $this->authParams['apikey']);  
+        }else{
+            $user->addAttribute('username', $this->authParams['user']);
+            $user->addAttribute('password', $this->authParams['pwd']); 
+        }        
         foreach($sms_datas as $sms_data){
             $sms = $msg->addChild('sms');
             $sms->addAttribute('text', $sms_data['sms_body']);
@@ -117,12 +87,10 @@ XML;
         if($msg->count() <= 1)
         { return false; }         
         $xmldata = $msg->asXML();
-        echo $xmldata;
         $url = 'http://www.smsalert.co.in/api/xmlpush.json';
         $params=array(
         'data'=>$xmldata); 
-        $Util = new Utility();
-        return $Util->invoke_Api($url,$params);
+        return Utility::invoke_api($url,$params);
     }
 
     //function to Create Contact
@@ -130,10 +98,8 @@ XML;
     {
         $url = $this->url.'/api/createcontact.json';
         $params=array('grpname'=>$grpname,'name'=>$name,'number'=>$number);
-        $paras = $this->authenticateParams();
-        $params = array_merge($params,$paras);
-        $Util = new Utility();
-        return $Util->invoke_Api($url,$params);
+        $params = array_merge($params,$this->authParams);
+        return Utility::invoke_api($url,$params);
     }
 
     //function to create group
@@ -142,41 +108,30 @@ XML;
         $url = $this->url.'/api/creategroup.json';
         $params=array(
         'name'=>$grpname);
-        $paras = $this->authenticateParams();
-        $params = array_merge($params,$paras);
-        $Util = new Utility();
-        return $Util->invoke_Api($url,$params);
+        $params = array_merge($params,$this->authParams);
+        return Utility::invoke_api($url,$params);
     }
 
     //function to get template list
     public function getTemplateList()
     {
         $url = $this->url.'/api/templatelist.json';      
-        $params = $this->authenticateParams();
-        $Util = new Utility();
-        return $Util->invoke_Api($url,$params);
+        return Utility::invoke_api($url,$this->authParams);
     }
 
-    //function for set apikey
-    public function setApikey($apikey)
+    //function to set apikey
+    function authWithApikey($apikey)
     {
-    	$this->apikey = $apikey;
-    	return $this;
+        $this->authParams=array('apikey'=>$apikey);
+        return $this;
     }
 
-    //function for set username
-	public function setUsername($username)
+    //function to set apikey
+    function authWithUserIdPwd($user,$pwd)
     {
-    	$this->username = $username;
-    	return $this;
-    }    
-
-    //function for set password
-    public function setPassword($password)
-    {
-    	$this->pass = $password;
-    	return $this;
-    } 
+        $this->authParams=array('user'=>$user,'pwd'=>$pwd);
+        return $this;
+    }
 
     //function for set route
     public function setRoute($route)

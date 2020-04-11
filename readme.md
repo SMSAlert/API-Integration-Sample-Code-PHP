@@ -21,11 +21,10 @@ Sms Alert Php library for sending transactional/promotional SMS, through your cu
     include_once('smsalert/classes/Smsalert.php');
 
 # create object and pass arguments
-    $smsalert = (new Smsalert()) 
-				->setApiKey("apikey")
-               	->setUsername("username")
+    $smsalert = (new Smsalert())
+                ->authWithApikey("apikey")
+                ->authWithUserIdPwd("username","pass")
                 ->setRoute("route")
-                ->setPassword("pass")
                 ->setSender("senderid");
 
 # Send Single Number
@@ -47,7 +46,7 @@ Sms Alert Php library for sending transactional/promotional SMS, through your cu
     $result = $smsalert->getUserProfile();
 
 # Get Group List
-    $result = $smsalert->getGroupList();
+    $result = $smsalert->getGroupList("10","1","desc");
 
 # Get Group Contact List
     $result = $smsalert->getContactList("grpname");

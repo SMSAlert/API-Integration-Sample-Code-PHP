@@ -2,7 +2,7 @@
 class Utility 
 {	
 	//function name change invoke_api
-	function invoke_Api($url,$params)
+	public static function invoke_Api($url,$params)
 	{
 		$url = (!empty($params)) ?  $url.'?'.http_build_query($params) : $url;
 		$ch = curl_init($url);
