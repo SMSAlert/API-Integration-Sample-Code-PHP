@@ -6,15 +6,11 @@ $senderid='';	// write your senderid in between ''
 $route='';      // write your route in between ''
 $username = ''; // write your username in between ''
 $pass='';	// write your pass in between ''
-$smsalert = (new Smsalert()) 			//With ApiKey
+$smsalert = (new Smsalert()) 		
 	   ->authWithApikey($apikey)
 	   ->setRoute($route)
 	   ->setSender($senderid);
-// ============== OR ===============	   			
-$smsalert = (new Smsalert()) 	// With Username and Password	
-	   ->authWithUserIdPwd($username,$pass)
-	   ->setRoute($route)
-	   ->setSender($senderid);
+
 
 //======== for send sms ================
 $numbers='918010551055'; //enter the number on which text to be messaged
