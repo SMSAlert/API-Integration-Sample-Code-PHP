@@ -8,7 +8,8 @@
     private $sender;       // declare senderid of user 
     private $route;         // declare route of user 
     private $url='http://www.smsalert.co.in';   // Define url
-    private $authParams=array();  // Define Authparams      
+    private $authParams=array();  // Define Authparams  
+    private $prefix;    
 
     //For Auth Params
     public function getAuthParams()
@@ -20,12 +21,38 @@
             return $this->authParams;
         }
     }
+    
+    //For Format Number
+    private function formatNumber($mobileno)
+    {    
+         $prefix = $this->setForcePrefix('91');
+         $mobileno = explode(',',$mobileno);
+         $nos = preg_replace('/[^0-9]/', '', $mobileno);
+         $valid_no=array();
+         if(is_array($nos))
+            {           
+                foreach($nos as $no){
+                    $no = ltrim(ltrim($no, '+'),'0'); //remove leading + and 0
+                    $no = (substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
+                    $match = preg_match("/^(\+)?(".$prefix.")?0?\d{10}$/",$no);
+                    if($match)
+                    { $valid_no[] = $no; }  
+                }
+            }
+         return $num =implode(',', $valid_no);           
+    }
+
+    //For Set Force Prefix
+    private function setForcePrefix($prefix)
+    {    
+       return $prefix;
+    }
 
     // For Sending Smsalert
     public function send($mobileno,$text,$schedule=null)
     {   
         $url = $this->url.'/api/push.json';
-        $params=array('sender'=>$this->sender,'mobileno'=>$mobileno,'text'=>$text);   
+        $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);   
         if(!empty($schedule))
         {   
             $params['schedule'] = $schedule; // for Schedule Sms 
@@ -162,7 +189,7 @@ XML;
     public function createContact($grpname,$name,$number)
     {
         $url = $this->url.'/api/createcontact.json';
-        $params=array('grpname'=>$grpname,'name'=>$name,'number'=>$number);
+        $params=array('grpname'=>$grpname,'name'=>$name,'number'=>$this->formatNumber($number));
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
@@ -171,7 +198,7 @@ XML;
     public function editContact($id,$name,$number)
     {
         $url = $this->url.'/api/updatecontact.json';
-        $params=array('id'=>$id,'name'=>$name,'number'=>$number);
+        $params=array('id'=>$id,'name'=>$name,'number'=>$this->formatNumber($number));
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
@@ -264,7 +291,7 @@ XML;
     public function updateProfile($fname,$lname,$number,$emailid)
     {
         $url = $this->url.'/api/updateprofile.json';
-        $params=array('firstname'=>$fname,'lastname'=>$lname,'mobilenumber'=>$number,'emailid'=>$emailid);
+        $params=array('firstname'=>$fname,'lastname'=>$lname,'mobilenumber'=>$this->formatNumber($number),'emailid'=>$emailid);
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);   
     }
@@ -274,7 +301,7 @@ XML;
     public function generateOtp($mobileno,$template)
     {
         $url = $this->url.'/api/mverify.json';
-        $params=array('sender'=>$this->sender,'mobileno'=>$mobileno,'template'=>$template);
+        $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'template'=>$template);
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params); 
     }
@@ -283,7 +310,7 @@ XML;
     public function validateOtp($mobileno,$code)
     {
         $url = $this->url.'/api/mverify.json';
-        $params=array('code'=>$code,'mobileno'=>$mobileno);
+        $params=array('code'=>$code,'mobileno'=>$this->formatNumber($mobileno));
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params); 
     }
@@ -320,7 +347,7 @@ XML;
     {
         $url = $this->url.'/api/push.json';
         $dlrurl = (parse_url($dlrurl, PHP_URL_HOST) == 'localhost') ? urlencode($dlrurl) : $dlrurl;   
-        $params=array('sender'=>$this->sender,'mobileno'=>$mobileno,'text'=>$text,
+        $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text,
                       'reference'=>$reference, 'dlrurl'=>$dlrurl,'schedule'=>$schedule);
         $params['route']= !empty($this->route) ? $this->route : '';
         $params = array_merge($params,$this->getAuthParams());
