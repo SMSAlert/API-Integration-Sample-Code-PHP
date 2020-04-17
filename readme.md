@@ -20,18 +20,8 @@ Sms Alert Php library for sending transactional/promotional SMS, through your cu
     include_once('smsalert/classes/Smsalert.php');
 
 # create object and pass arguments
-
-   With Apikey:
     $smsalert = (new Smsalert())
                 ->authWithApikey("apikey")
-                ->setRoute("route")
-                ->setSender("senderid");
-
-                OR
-
-   With Username and Password:             
-                $smsalert = (new Smsalert())
-                ->authWithUserIdPwd("username","pass")
                 ->setRoute("route")
                 ->setSender("senderid");
 
