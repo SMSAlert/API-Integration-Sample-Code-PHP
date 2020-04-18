@@ -7,26 +7,28 @@ $route='';      // write your route in between ''
 $username = ''; // write your username in between ''
 $pass='';	// write your pass in between ''
 $smsalert = (new Smsalert()) 		
-	   ->authWithApikey($apikey)
+	   ->authWithUserIdPwd($username,$pass)
 	   ->setRoute($route)
 	   ->setSender($senderid);
 
 
 //======== for send sms ================
-$numbers='918010551055'; //enter the number on which text to be messaged
-$message="Messages For check multiple numbers"; // write your msg here between ""
-$schedule = "2020-04-10 2:53";  // write schedule date and time here between ""    
+$numbers='8010551055'; //enter the number on which text to be messaged
+$message="Order again for test"; // write your msg here between ""
+$schedule = "";  // write schedule date and time here between "" 
+$reference = '122215';  //reference no. for delivered message
+$dlrurl = 'https://webhook.site/de0b3ecf-f444-4bee-ae38-cad217dbe4b0';  //callback url for delivery notification   
 $result = $smsalert->send($numbers,$message); // For Send Sms
 $result = $smsalert->send($numbers,$message,$schedule); // For Schedule Sms
-
+$result = $smsalert->send($numbers,$message,$schedule,$reference,$dlrurl); // For Push Report
 //========== for edit Schedule =============
-$batchid = '37783071'; //schedule batchid
+$campaignid = '37783071'; //schedule campaignid
 $schedule = "2020-12-20 2:53"; //schedule date and time	   
-$result = $smsalert->editSchedule($batchid,$schedule);
+$result = $smsalert->editSchedule($campaignid,$schedule);
 
 //========== for Cancel Schedule =============
-$batchid = '37783071';  //schedule batchid
-$result = $smsalert->cancelSchedule($batchid);
+$campaignid = '37783071';  //schedule campaignid
+$result = $smsalert->cancelSchedule($campaignid);
 
 //============ For send sms using xml ==============
 $datas = array(array('number'=>'8010551055','sms_body'=>'New Messages'));	
@@ -64,12 +66,11 @@ $grid='2713'; //enter the group id to edit
 $grpname= 'Tsts';
 $result = $smsalert->editGroup($grpname,$grid);
 
-//============ For Send Group Sms ==============
+// //============ For Send Group Sms ==============
 $grid='2713'; //enter the group id
-$grpname= 'Tsts'; //enter group name
 $text= 'Enter Messages Here'; //enter msg to send
 $schedule= '2020-05-22 19:02'; //write date and time for schedule
-$result = $smsalert->sendGroupSms($grpname,$grid,$text,$schedule);    
+$result = $smsalert->sendGroupSms($grid,$text,$schedule);    
 
 //========== For Get Contact List ===========
 $groupid='2371'; //enter group id 
@@ -121,8 +122,8 @@ $result = $smsalert->generateOtp($mobileno,$template);
 
 //============ For Validate Otp ======================
 $mobileno = '8010550055'; // enter contact no. of 
-$code = '1413'; // enter otp sent on mobile             
-$result = $smsalert->validateOtp($mobileno,$code);	 
+$otp = '1413'; // enter otp sent on mobile             
+$result = $smsalert->validateOtp($mobileno,$otp);	 
 
 //============ For Create Short Url ======================
 $url = ''; // enter url here between ""           
@@ -138,21 +139,12 @@ $page=1; //enter pages
 $schedule=1; // enter schedule          
 $result = $smsalert->smsReport($limit,$page,$schedule);
 
-//============ For Push Report ====================== 
-$mobileno = '8010551055';
-$text = 'Hello this is a new order';
-$reference = '123456';   
-$dlrurl = 'https://webhook.site/de0b3ecf-f444-4bee-ae38-cad217dbe4b0';     
-$schedule="2020-11-10 2:53"; 
-$result = $smsalert->pushReport($mobileno,$text,$reference,$dlrurl,$schedule);
-
 //============ For Pull Report ======================  
-$batchid = '37724276';
-$result = $smsalert->pullReport($batchid);	   
+$campaignid = '37724276';
+$result = $smsalert->pullReport($campaignid);	   
 
 //============ For Balance Check ======================
 $result = $smsalert->balanceCheck(); 
-
 
 if($result['status'] == 'success')
 {

@@ -11,7 +11,10 @@
     private $authParams=array();  // Define Authparams  
     private $prefix;    
 
-    //For Auth Params
+    /*****************************************************************************************
+    * for authenticate parameters
+    *
+    *****************************************************************************************/
     public function getAuthParams()
     {
         if(empty($this->authParams))
@@ -22,7 +25,10 @@
         }
     }
     
-    //For Format Number
+    /*****************************************************************************************
+    * for fromat Number
+    *
+    *****************************************************************************************/
     private function formatNumber($mobileno)
     {    
          $prefix = $this->setForcePrefix('91');
@@ -34,7 +40,7 @@
                 foreach($nos as $no){
                     $no = ltrim(ltrim($no, '+'),'0'); //remove leading + and 0
                     $no = (substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
-                    $match = preg_match("/^(\+)?(".$prefix.")?0?\d{10}$/",$no);
+                    $match = preg_match("/^(\+)?(".$prefix.")?0?\d{10,12}$/",$no);
                     if($match)
                     { $valid_no[] = $no; }  
                 }
@@ -42,17 +48,33 @@
          return $num =implode(',', $valid_no);           
     }
 
-    //For Set Force Prefix
+    /*****************************************************************************************
+    * for set Force Prefice
+    *
+    *****************************************************************************************/
     private function setForcePrefix($prefix)
     {    
        return $prefix;
     }
 
-    // For Sending Smsalert
-    public function send($mobileno,$text,$schedule=null)
+    
+    /*****************************************************************************************
+    * used to send or schedule sms
+    *
+    * Parameters accepted
+    *
+    * mobileno(mandatory)  - valid mobile number including country code without leading 0 or + symbol
+    *                        multiple numbers can be sent seperated by comma(,)
+    * text(mandatory)      - sms content to be sent without encoded 
+    * schedule(optional)   - schedule your messages eg : '2020-06-10 12:00:02';
+    * $reference(optional) - reference no. for delivered msg report eg : '125546';
+    * $dlrurl(optional)    - callback url for delivery notification(url encoded format) 
+                             eg : http://www.test.com/dlr.php
+    *****************************************************************************************/
+    public function send($mobileno,$text,$schedule=null,$reference=null,$dlrurl=null)
     {   
         $url = $this->url.'/api/push.json';
-        $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);   
+        $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);  
         if(!empty($schedule))
         {   
             $params['schedule'] = $schedule; // for Schedule Sms 
@@ -61,20 +83,46 @@
         {
             $params['route']=$this->route; 
         }
+        if(!empty($dlrurl)) // for push report
+        {
+            $dlrurl = (parse_url($dlrurl, PHP_URL_HOST) == 'localhost') ? urlencode($dlrurl) : $dlrurl;
+            $params['dlrurl']=$dlrurl;
+            if(!empty($reference))
+            {
+                $params['reference']=$reference; 
+            }
+            else{
+                die('you must use reference parameter to use DLR callback url');
+            }   
+        }
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
     
-    // For Edit Scheudle
+    /*****************************************************************************************
+    * used to edit schedule sms
+    *
+    * Parameters accepted
+    *
+    * batchid(mandatory)    - batch id of the scheduled sms, received while sending the sms through API
+    * schedule(mandatory)   - Date and time for updated schedule (Format: YYYY-MM-DD HH:MM:SS)
+                              eg : '2020-06-10 12:00:02';
+    *****************************************************************************************/
     public function editSchedule($batchid,$schedule)
     {
         $url = $this->url.'/api/modifyschedule.json';
-        $params=array('batchid'=>$batchid,'schedule'=>$schedule);
+        $params=array('batchid'=>$campaignid,'schedule'=>$schedule);
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
 
-    // For Cancel Scheudle
+    /*****************************************************************************************
+    * used to cancel schedule sms
+    *
+    * Parameters accepted
+    *
+    * batchid(mandatory)  - batch id of the scheduled sms, received while sending the sms through API
+    *****************************************************************************************/
     public function cancelSchedule($batchid)
     {
         $url = $this->url.'/api/cancelschedule.json';
@@ -83,21 +131,67 @@
         return Utility::invoke_api($url,$params);
     }
 
-    // For Sender Id List
+    /*****************************************************************************************
+    * used to send sms report
+    *
+    * Parameters accepted
+    *
+    * limit(optional)     - to get the list of records available per page. Default value for page is 10.
+    * page(optional)      - to get the list of records from the respective pages. Default value for page is 1.
+    * schedule(optional)  - schedule of sms report
+    *****************************************************************************************/
+    public function smsReport($limit=10,$page=1,$schedule=1)
+    {
+        $url = $this->url.'/api/smscampaignlog.json';
+        $params=array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
+        $params = array_merge($params,$this->getAuthParams());
+        return Utility::invoke_api($url,$params); 
+    }
+
+
+    /*****************************************************************************************
+    * used to pull sms report
+    *
+    * Parameters accepted
+    *
+    * batchid(mandatory)  - batch id received in response to every push request
+    *****************************************************************************************/
+    public function pullReport($batchid)
+    {   
+        $url = $this->url.'/api/pull.json';
+        $params=array('batchid'=>$batchid);
+        $params = array_merge($params,$this->getAuthParams());
+        return Utility::invoke_api($url,$params); 
+    }
+
+    /*****************************************************************************************
+    * used to get sender id
+    *
+    *****************************************************************************************/
     public function getSenderId()
     {
         $url = $this->url.'/api/senderlist.json';
         return Utility::invoke_api($url,$this->getAuthParams());
     }
 
-    // For User Profile
+    /*****************************************************************************************
+    * used to get User Profiel
+    *
+    *****************************************************************************************/
     public function getUserProfile()
     {
         $url = $this->url.'/api/user.json';
         return Utility::invoke_api($url,$this->getAuthParams());
     }
 
-    // For Send Sms Using xml
+    /*****************************************************************************************
+    * used to send sms xml push api
+    *
+    * Parameters accepted
+    *
+    * sms_datas(mandatory)  - array of number and msg to send sms
+                              eg:array(array('number'=>'8010551055','sms_body'=>'New Messages'));
+    *****************************************************************************************/
     public  function sendSmsXml($sms_datas)
     {   if(is_array($sms_datas) && sizeof($sms_datas) == 0)
         {return false;}
@@ -130,7 +224,15 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //For Group List
+    /*****************************************************************************************
+    * used to get group list
+    *
+    * Parameters accepted
+    *
+    * limit(optional)   - to get the list of records available per page. Default value for page is 10
+    * page(optional)    - to get the list of records from the respective pages. Default value for page is 1
+    * order(optional)   - to get the list of records in 'desc' order by default.
+     *****************************************************************************************/
     public function getGroupList($limit=10,$page=1,$order='desc')
     {
         $url = $this->url.'/api/grouplist.json';
@@ -139,7 +241,13 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //For Create Group
+    /*****************************************************************************************
+    * used to create group
+    *
+    * Parameters accepted
+    *
+    * grpname(mandatory)   - group name, that you wish to create
+     *****************************************************************************************/
     public function createGroup($grpname)
     {
         $url = $this->url.'/api/creategroup.json';
@@ -148,35 +256,66 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //For Delete Group
-    public function deleteGroup($id)
+    /*****************************************************************************************
+    * used to delete group
+    *
+    * Parameters accepted
+    *
+    * grpid(mandatory)   - group id, that you wish to delete
+     *****************************************************************************************/
+    public function deleteGroup($grpid)
     {
         $url = $this->url.'/api/deletegroup.json';
-        $params=array('id'=>$id);
+        $params=array('id'=>$grpid);
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
 
-    //For Edit Group
-    public function editGroup($grpname,$id)
+    /*****************************************************************************************
+    * used to edit group
+    *
+    * Parameters accepted
+    *
+    * grpname(mandatory) - the group name that you want to modified
+    * grpid(mandatory)   - group id, that you wish to modified
+     *****************************************************************************************/
+    public function editGroup($grpname,$grpid)
     {
         $url = $this->url.'/api/updategroup.json';
-        $params=array('id'=>$id,'name'=>$grpname);
+        $params=array('id'=>$grpid,'name'=>$grpname);
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
 
-    //For Send Group Sms
-    public function sendGroupSms($grpname,$grid,$text,$schedule=null)
+    /*****************************************************************************************
+    * used to send group sms
+    *
+    * Parameters accepted
+    *
+    * grpid(mandatory)    - group id, that you wish to send sms
+    * text(mandatory)     - sms content to be sent without encoded
+    * schedule(optional)  - date and time for schedule sms for group (Format: YYYY-MM-DD HH:MM:SS)
+                            eg : '2020-06-10 12:00:02';
+    *****************************************************************************************/
+    public function sendGroupSms($grpid,$text,$schedule=null)
     {
         $url = $this->url.'/api/grouppush.json';
-        $params=array('id'=>$grid,'name'=>$grpname,'text'=>$text,'schedule'=>$schedule,'sender'=>$this->sender);
+        $params=array('id'=>$grpid,'text'=>$text,'schedule'=>$schedule,'sender'=>$this->sender);
         $params['route']= !empty($this->route) ? $this->route : '';
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
 
-    //For Contact List
+    /*****************************************************************************************
+    * used to get contact list
+    *
+    * Parameters accepted
+    *
+    * grpid(mandatory)  - group id, to get contact list of group
+    * limit(optional)   - to get the list of records available per page. Default value for page is 10
+    * page(optional)    - to get the list of records from the respective pages. Default value for page is 1
+    * order(optional)   - to get the list of records in 'desc' order by default.
+    *****************************************************************************************/
     public function getContactList($groupid,$limit=10,$page=1,$order='desc')
     {
         $url = $this->url.'/api/contactlist.json';
@@ -185,7 +324,15 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //For Create Contact
+    /*****************************************************************************************
+    * used to create contact
+    *
+    * Parameters accepted
+    *
+    * grpname(mandatory)  - group name in which you want to create contact
+    * name(mandatory)     - contact name of the person
+    * number(mandatory)   - contact number of the person
+    *****************************************************************************************/
     public function createContact($grpname,$name,$number)
     {
         $url = $this->url.'/api/createcontact.json';
@@ -194,16 +341,30 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //For Edit Contact
-    public function editContact($id,$name,$number)
+    /*****************************************************************************************
+    * used to edit contact
+    *
+    * Parameters accepted
+    *
+    * contactid(mandatory) - contact Number Id
+    * name(mandatory)      - contact Name of the person
+    * number(mandatory)    - contact Number of the person
+    *****************************************************************************************/
+    public function editContact($contactid,$name,$number)
     {
         $url = $this->url.'/api/updatecontact.json';
-        $params=array('id'=>$id,'name'=>$name,'number'=>$this->formatNumber($number));
+        $params=array('id'=>$contactid,'name'=>$name,'number'=>$this->formatNumber($number));
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
 
-    //For Delete Contact
+    /*****************************************************************************************
+    * used to delete contact
+    *
+    * Parameters accepted
+    *
+    * contactid(mandatory) - contact number id that wish you to delete
+    *****************************************************************************************/
     public function deleteContact($id)
     {
         $url = $this->url.'/api/deletecontact.json';
@@ -211,8 +372,17 @@ XML;
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }
-    //For Contat create with xml
-    public function importXmlContact($sms_datas=null,$grpname)
+
+    /*****************************************************************************************
+    * used to import contact
+    *
+    * Parameters accepted
+    *
+    * sms_datas(mandatory)  - array of number and msg to create contact
+                              eg:array(array('person_name'=>'Ankit Sharma','number'=>'8999999999'));
+    * grpname(mandatory)    - group name to add contact
+    *****************************************************************************************/
+    public function importXmlContact($sms_datas,$grpname)
     {
        if(is_array($sms_datas) && sizeof($sms_datas) == 0)
         {return false;}
@@ -246,14 +416,24 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //Template List
+    /*****************************************************************************************
+    * used to get template list
+    *
+    *****************************************************************************************/
     public function getTemplateList()
     {
         $url = $this->url.'/api/templatelist.json';      
         return Utility::invoke_api($url,$this->getAuthParams());
     }
 
-    //Create Template
+    /*****************************************************************************************
+    * used to create template
+    *
+    * Parameters accepted
+    *
+    * name(mandatory)  - template name
+    * text(mandatory)  - sms content of template without encoded
+    *****************************************************************************************/
     public function createTemplate($name,$text)
     {
         $url = $this->url.'/api/createtemplate.json'; 
@@ -262,7 +442,15 @@ XML;
         return Utility::invoke_api($url,$params);
     }
     
-    //Edit Template
+    /*****************************************************************************************
+    * used to edit template
+    *
+    * Parameters accepted
+    *
+    * name(mandatory)  - name of template
+    * text(mandatory)  - sms content of template without encoded
+    * id(mandatory)    - template id that you wish to edit
+    *****************************************************************************************/
     public function editTemplate($name,$text,$id)
     {
         $url = $this->url.'/api/updatetemplate.json'; 
@@ -271,7 +459,13 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //Edit Template
+    /*****************************************************************************************
+    * used to delete template
+    *
+    * Parameters accepted
+    *
+    * id(mandatory)    - template id that you wish to delete
+    *****************************************************************************************/
     public function deleteTemplate($id)
     {
         $url = $this->url.'/api/deletetemplate.json'; 
@@ -280,14 +474,26 @@ XML;
         return Utility::invoke_api($url,$params);
     }
 
-    //Check Balance
+    /*****************************************************************************************
+    * used to check balance
+    *
+    *****************************************************************************************/
     public function balanceCheck()
     {
         $url = $this->url.'/api/creditstatus.json';
         return Utility::invoke_api($url,$this->getAuthParams());
     }
 
-    //Update Profile
+    /*****************************************************************************************
+    * used to update profile
+    *
+    * Parameters accepted
+    *
+    * fname(mandatory)    - first name of user
+    * lname(mandatory)    - last name of user
+    * number(mandatory)   - mobile number of user
+    * emailid(mandatory)  - email id of user
+    *****************************************************************************************/
     public function updateProfile($fname,$lname,$number,$emailid)
     {
         $url = $this->url.'/api/updateprofile.json';
@@ -296,8 +502,16 @@ XML;
         return Utility::invoke_api($url,$params);   
     }
 
-    //Generate Otp
-    //mandatory to include [otp] tag in template content
+    /*****************************************************************************************
+    * used to generate otp
+    *
+    * Parameters accepted
+    *
+    * mobileno(mandatory)    - valid mobile number including country code without leading 0 or + symbol
+    *                          multiple numbers can be sent seperated by comma(,)
+    * template(mandatory)    - Template to be used for sending OTP, it is mandatory to include [otp] tag in 
+                               template content.
+    *****************************************************************************************/
     public function generateOtp($mobileno,$template)
     {
         $url = $this->url.'/api/mverify.json';
@@ -306,16 +520,30 @@ XML;
         return Utility::invoke_api($url,$params); 
     }
 
-    //Validate Otp
-    public function validateOtp($mobileno,$code)
+    /*****************************************************************************************
+    * used to validate otp
+    *
+    * Parameters accepted
+    *
+    * mobileno(mandatory)    - valid mobile number including country code without leading 0 or + symbol
+    *                          multiple numbers can be sent seperated by comma(,)
+    * otp(mandatory)         - OTP entered by the user
+    *****************************************************************************************/
+    public function validateOtp($mobileno,$otp)
     {
         $url = $this->url.'/api/mverify.json';
-        $params=array('code'=>$code,'mobileno'=>$this->formatNumber($mobileno));
+        $params=array('code'=>$otp,'mobileno'=>$this->formatNumber($mobileno));
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params); 
     }
 
-    // Create Short Url
+    /*****************************************************************************************
+    * used to create short url
+    *
+    * Parameters accepted
+    *
+    * url(mandatory)    - long url that you wish to shorten
+    *****************************************************************************************/
     public function createShortUrl($longurl)
     {
         $url = $this->url.'/api/createshorturl.json';
@@ -324,7 +552,13 @@ XML;
         return Utility::invoke_api($url,$params); 
     }
 
-    // Create Short Url
+    /*****************************************************************************************
+    * used to delete short url
+    *
+    * Parameters accepted
+    *
+    * url(mandatory)    - short url id that you wish to delete
+    *****************************************************************************************/
     public function deleteShortUrl($urlid)
     {
         $url = $this->url.'/api/deleteshorturl.json';
@@ -333,58 +567,40 @@ XML;
         return Utility::invoke_api($url,$params); 
     }
 
-    //Sent Sms Report
-    public function smsReport($limit=10,$page=1,$schedule=1)
-    {
-        $url = $this->url.'/api/smscampaignlog.json';
-        $params=array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
-        $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
-    }
-
-    //Push Report
-    public function pushReport($mobileno,$text,$reference,$dlrurl,$schedule=null)
-    {
-        $url = $this->url.'/api/push.json';
-        $dlrurl = (parse_url($dlrurl, PHP_URL_HOST) == 'localhost') ? urlencode($dlrurl) : $dlrurl;   
-        $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text,
-                      'reference'=>$reference, 'dlrurl'=>$dlrurl,'schedule'=>$schedule);
-        $params['route']= !empty($this->route) ? $this->route : '';
-        $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
-    }
-
-    //Pull Report
-    public function pullReport($batchid)
-    {   
-        $url = $this->url.'/api/pull.json';
-        $params=array('batchid'=>$batchid);
-        $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
-    }
-
-    //Set Apikey
+    /*****************************************************************************************
+    * used to set apikey
+    *
+    *****************************************************************************************/
     function authWithApikey($apikey)
     {
         $this->authParams=array('apikey'=>$apikey);
         return $this;
     }
 
-    //Set Username and Password
+    /*****************************************************************************************
+    * used to set username and password
+    *
+    *****************************************************************************************/
     function authWithUserIdPwd($user,$pwd)
     {
         $this->authParams=array('user'=>$user,'pwd'=>$pwd);
         return $this;
     }
 
-    //Set Route
+    /*****************************************************************************************
+    * used to set route
+    *
+    *****************************************************************************************/
     public function setRoute($route)
     {
         $this->route = $route;
         return $this;
     } 
 
-    //Set Senderid
+    /*****************************************************************************************
+    * used to set sender id 
+    *
+    *****************************************************************************************/
     public function setSender($sender)
     {
         $this->sender = $sender;
