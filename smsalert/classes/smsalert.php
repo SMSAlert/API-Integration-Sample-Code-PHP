@@ -3,7 +3,9 @@
  *  @author    Cozy Vision Technologies Pvt. Ltd.
  *  @copyright 2010-2016 cozyvision Technology Pvt Ltd.
  */
- include_once("smsalert/helper/Utility.php");
+ include("smsalert/vendor/guzzle/vendor/autoload.php");
+ use GuzzleHttp\Client;
+
  class Smsalert{
     private $sender;       // declare senderid of user 
     private $route;         // declare route of user 
@@ -25,6 +27,7 @@
         }
     }
     
+
     /*****************************************************************************************
     * for fromat Number
     *
@@ -94,7 +97,10 @@
             }   
         }
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;  
     }
     
     /*****************************************************************************************
@@ -111,7 +117,10 @@
         $url = $this->url.'/api/modifyschedule.json';
         $params=array('batchid'=>$batchid,'schedule'=>$schedule);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;  
     }
 
     /*****************************************************************************************
@@ -126,7 +135,10 @@
         $url = $this->url.'/api/cancelschedule.json';
         $params=array('batchid'=>$batchid);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;  
     }
 
     /*****************************************************************************************
@@ -143,7 +155,10 @@
         $url = $this->url.'/api/smscampaignlog.json';
         $params=array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;  
     }
 
 
@@ -159,7 +174,10 @@
         $url = $this->url.'/api/pull.json';
         $params=array('batchid'=>$batchid);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;   
     }
 
     /*****************************************************************************************
@@ -169,7 +187,10 @@
     public function getSenderId()
     {
         $url = $this->url.'/api/senderlist.json';
-        return Utility::invoke_api($url,$this->getAuthParams());
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;  
     }
 
     /*****************************************************************************************
@@ -179,7 +200,10 @@
     public function getUserProfile()
     {
         $url = $this->url.'/api/user.json';
-        return Utility::invoke_api($url,$this->getAuthParams());
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -219,7 +243,10 @@ XML;
         $xmldata = $msg->asXML();
         $url = $this->url.'/api/xmlpush.json';
         $params=array('data'=>$xmldata); 
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -236,7 +263,10 @@ XML;
         $url = $this->url.'/api/grouplist.json';
         $params=array('limit'=>$limit,'page'=>$page,'order'=>$order);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -251,7 +281,10 @@ XML;
         $url = $this->url.'/api/creategroup.json';
         $params=array('name'=>$grpname);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -266,7 +299,10 @@ XML;
         $url = $this->url.'/api/deletegroup.json';
         $params=array('id'=>$grpid);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -282,7 +318,10 @@ XML;
         $url = $this->url.'/api/updategroup.json';
         $params=array('id'=>$grpid,'name'=>$grpname);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -301,7 +340,10 @@ XML;
         $params=array('id'=>$grpid,'text'=>$text,'schedule'=>$schedule,'sender'=>$this->sender);
         $params['route']= !empty($this->route) ? $this->route : '';
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -319,7 +361,10 @@ XML;
         $url = $this->url.'/api/contactlist.json';
         $params=array('group_id'=>$groupid,'limit'=>$limit,'page'=>$page,'order'=>$order);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -336,7 +381,10 @@ XML;
         $url = $this->url.'/api/createcontact.json';
         $params=array('grpname'=>$grpname,'name'=>$name,'number'=>$this->formatNumber($number));
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -353,7 +401,10 @@ XML;
         $url = $this->url.'/api/updatecontact.json';
         $params=array('id'=>$contactid,'name'=>$name,'number'=>$this->formatNumber($number));
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -368,7 +419,10 @@ XML;
         $url = $this->url.'/api/deletecontact.json';
         $params=array('id'=>$id);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -421,7 +475,10 @@ XML;
     public function getTemplateList()
     {
         $url = $this->url.'/api/templatelist.json';      
-        return Utility::invoke_api($url,$this->getAuthParams());
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -437,7 +494,10 @@ XML;
         $url = $this->url.'/api/createtemplate.json'; 
         $params=array('name'=>$name,'text'=>$text);
         $params = array_merge($params,$this->getAuthParams());     
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
     
     /*****************************************************************************************
@@ -454,7 +514,10 @@ XML;
         $url = $this->url.'/api/updatetemplate.json'; 
         $params=array('name'=>$name,'text'=>$text,'id'=>$id);
         $params = array_merge($params,$this->getAuthParams());     
-        return Utility::invoke_api($url,$params);
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -468,8 +531,11 @@ XML;
     {
         $url = $this->url.'/api/deletetemplate.json'; 
         $params=array('id'=>$id);
-        $params = array_merge($params,$this->getAuthParams());     
-        return Utility::invoke_api($url,$params);
+        $params = array_merge($params,$this->getAuthParams()); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;    
     }
 
     /*****************************************************************************************
@@ -479,7 +545,10 @@ XML;
     public function balanceCheck()
     {
         $url = $this->url.'/api/creditstatus.json';
-        return Utility::invoke_api($url,$this->getAuthParams());
+         $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -497,7 +566,10 @@ XML;
         $url = $this->url.'/api/updateprofile.json';
         $params=array('firstname'=>$fname,'lastname'=>$lname,'mobilenumber'=>$this->formatNumber($number),'emailid'=>$emailid);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params);   
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body; 
     }
 
     /*****************************************************************************************
@@ -515,7 +587,10 @@ XML;
         $url = $this->url.'/api/mverify.json';
         $params=array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'template'=>$template);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -532,7 +607,10 @@ XML;
         $url = $this->url.'/api/mverify.json';
         $params=array('code'=>$otp,'mobileno'=>$this->formatNumber($mobileno));
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -547,7 +625,10 @@ XML;
         $url = $this->url.'/api/createshorturl.json';
         $params=array('url'=>$longurl);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
@@ -562,7 +643,10 @@ XML;
         $url = $this->url.'/api/deleteshorturl.json';
         $params=array('id'=>$urlid);
         $params = array_merge($params,$this->getAuthParams());
-        return Utility::invoke_api($url,$params); 
+        $client = new Client();
+        $response = $client->request('POST', $url, ['query' => $params]);
+        $body = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************
