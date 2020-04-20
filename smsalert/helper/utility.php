@@ -1,15 +1,23 @@
 <?php
+include("smsalert/helper/guzzle/vendor/autoload.php");
+use GuzzleHttp\Client;
 class Utility 
 {	
-	//function name change invoke_api
-	public static function invoke_Api($url,$params)
+	/*****************************************************************************************
+    * used to invoke Api
+    *
+    * Parameters accepted
+    *
+    * url(mandatory)      - api url to hit
+    * params(mandatory)   - query string parameters
+    * method(optional)	  - requeset method to invoke api
+    *****************************************************************************************/
+	public static function invoke_Api($url,$params,$method='POST')
 	{
-		$url = (!empty($params)) ?  $url.'?'.http_build_query($params) : $url;
-		$ch = curl_init($url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		$output = curl_exec($ch);
-		curl_close($ch);
-		return json_decode($output,true); 
+		$client = new Client();
+		$response = $client->request($method, $url, ['query' => $params]);
+		$body = json_decode($response->getBody(),TRUE); 
+		return $body;
 	}
 }
 ?>

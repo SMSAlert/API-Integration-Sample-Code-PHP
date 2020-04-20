@@ -38,11 +38,9 @@
          if(is_array($nos))
             {           
                 foreach($nos as $no){
-                    $no = ltrim(ltrim($no, '+'),'0'); //remove leading + and 0
-                    $no = (substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
-                    $match = preg_match("/^(\+)?(".$prefix.")?0?\d{10,12}$/",$no);
-                    if($match)
-                    { $valid_no[] = $no; }  
+                    $no         = ltrim($no,'0'); //remove leading + and 0
+                    $no         = (substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
+                    $valid_no[] = $no;  
                 }
             }
          return $num =implode(',', $valid_no);           
@@ -111,7 +109,7 @@
     public function editSchedule($batchid,$schedule)
     {
         $url = $this->url.'/api/modifyschedule.json';
-        $params=array('batchid'=>$campaignid,'schedule'=>$schedule);
+        $params=array('batchid'=>$batchid,'schedule'=>$schedule);
         $params = array_merge($params,$this->getAuthParams());
         return Utility::invoke_api($url,$params);
     }

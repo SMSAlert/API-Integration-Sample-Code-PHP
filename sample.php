@@ -1,4 +1,5 @@
 <?php
+
 include("smsalert/classes/Smsalert.php");
 
 $apikey='';     // write your apikey in between ''
@@ -11,7 +12,6 @@ $smsalert = (new Smsalert())
 	   ->setRoute($route)
 	   ->setSender($senderid);
 
-
 //======== for send sms ================
 $numbers='8010551055'; //enter the number on which text to be messaged
 $message="Order again for test"; // write your msg here between ""
@@ -22,13 +22,13 @@ $result = $smsalert->send($numbers,$message); // For Send Sms
 $result = $smsalert->send($numbers,$message,$schedule); // For Schedule Sms
 $result = $smsalert->send($numbers,$message,$schedule,$reference,$dlrurl); // For Push Report
 //========== for edit Schedule =============
-$campaignid = '37783071'; //schedule campaignid
+$batchid = '37783071'; //schedule batchid
 $schedule = "2020-12-20 2:53"; //schedule date and time	   
-$result = $smsalert->editSchedule($campaignid,$schedule);
+$result = $smsalert->editSchedule($batchid,$schedule);
 
 //========== for Cancel Schedule =============
-$campaignid = '37783071';  //schedule campaignid
-$result = $smsalert->cancelSchedule($campaignid);
+$batchid = '37783071';  //schedule batchid
+$result = $smsalert->cancelSchedule($batchid);
 
 //============ For send sms using xml ==============
 $datas = array(array('number'=>'8010551055','sms_body'=>'New Messages'));	
@@ -121,8 +121,8 @@ $template = 'Your Verificatoin no is [otp]'; //mandatory to include [otp] tag in
 $result = $smsalert->generateOtp($mobileno,$template);	 
 
 //============ For Validate Otp ======================
-$mobileno = '8010550055'; // enter contact no. of 
-$otp = '1413'; // enter otp sent on mobile             
+$mobileno = '8010551055'; // enter contact no. of 
+$otp = '4720'; // enter otp sent on mobile             
 $result = $smsalert->validateOtp($mobileno,$otp);	 
 
 //============ For Create Short Url ======================
@@ -140,11 +140,12 @@ $schedule=1; // enter schedule
 $result = $smsalert->smsReport($limit,$page,$schedule);
 
 //============ For Pull Report ======================  
-$campaignid = '37724276';
-$result = $smsalert->pullReport($campaignid);	   
+$batchid = '37724276';
+$result = $smsalert->pullReport($batchid);	   
 
 //============ For Balance Check ======================
 $result = $smsalert->balanceCheck(); 
+
 
 if($result['status'] == 'success')
 {
