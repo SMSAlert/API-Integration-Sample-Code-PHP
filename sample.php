@@ -1,6 +1,8 @@
 <?php
 
 include("smsalert/classes/Smsalert.php");
+// include("smsalert/vendor/guzzle/vendor/autoload.php");
+
 
 $apikey='';     // write your apikey in between ''
 $senderid='';	// write your senderid in between ''
@@ -15,19 +17,19 @@ $smsalert = (new Smsalert())
 //======== for send sms ================
 $numbers='8010551055'; //enter the number on which text to be messaged
 $message="Order again for test"; // write your msg here between ""
-$schedule = "";  // write schedule date and time here between "" 
+$schedule = "2020-05-20 2:50";  // write schedule date and time here between "" 
 $reference = '122215';  //reference no. for delivered message
 $dlrurl = 'https://webhook.site/de0b3ecf-f444-4bee-ae38-cad217dbe4b0';  //callback url for delivery notification   
 $result = $smsalert->send($numbers,$message); // For Send Sms
 $result = $smsalert->send($numbers,$message,$schedule); // For Schedule Sms
 $result = $smsalert->send($numbers,$message,$schedule,$reference,$dlrurl); // For Push Report
 //========== for edit Schedule =============
-$batchid = '37783071'; //schedule batchid
-$schedule = "2020-12-20 2:53"; //schedule date and time	   
+$batchid = '37909043'; //schedule batchid
+$schedule = "2021-12-20 2:53"; //schedule date and time	   
 $result = $smsalert->editSchedule($batchid,$schedule);
 
 //========== for Cancel Schedule =============
-$batchid = '37783071';  //schedule batchid
+$batchid = '37909043';  //schedule batchid
 $result = $smsalert->cancelSchedule($batchid);
 
 //============ For send sms using xml ==============
@@ -54,7 +56,7 @@ $order = "desc" ;  // write schedule date and time here between ""
 $result = $smsalert->getGroupList($limit,$page,$order);
 
 //============ For Create group  ==============
-$grpname='NewGroup'; //enter the group name which you want to create
+$grpname='Groupsecond'; //enter the group name which you want to create
 $result = $smsalert->createGroup($grpname);	
 
 //============ For Delete group  ==============
@@ -62,24 +64,24 @@ $grid='2723'; //enter the group id to delete
 $result = $smsalert->deleteGroup($grid);		
 
 //============ For Edit group  ==============
-$grid='2713'; //enter the group id to edit
-$grpname= 'Tsts';
+$grid='2750'; //enter the group id to edit
+$grpname= 'groupsend';
 $result = $smsalert->editGroup($grpname,$grid);
 
 // //============ For Send Group Sms ==============
-$grid='2713'; //enter the group id
+$grid='2750'; //enter the group id
 $text= 'Enter Messages Here'; //enter msg to send
 $schedule= '2020-05-22 19:02'; //write date and time for schedule
 $result = $smsalert->sendGroupSms($grid,$text,$schedule);    
 
 //========== For Get Contact List ===========
-$groupid='2371'; //enter group id 
+$groupid='2750'; //enter group id 
 $result = $smsalert->getContactList($groupid);      
 
 //============ For Create Contact List  ==============
 $name = "Ramesh";  //enter contact member name                
 $number='8010585058'; //enter the number of member
-$grpname="Workg"; // enter group name in which you want to add     
+$grpname="groupsend"; // enter group name in which you want to add     
 $result = $smsalert->createContact($grpname,$name,$number);
 
 //============ For Edit Contact ==============
@@ -145,7 +147,6 @@ $result = $smsalert->pullReport($batchid);
 
 //============ For Balance Check ======================
 $result = $smsalert->balanceCheck(); 
-
 
 if($result['status'] == 'success')
 {
