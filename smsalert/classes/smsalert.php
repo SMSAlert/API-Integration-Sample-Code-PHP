@@ -5,9 +5,7 @@
  */
  include("smsalert/vendor/guzzle/vendor/autoload.php");
  use GuzzleHttp\Client;
- use GuzzleHttp\Psr7;
- use GuzzleHttp\Exception\ClientException;
-
+ 
  class Smsalert{
     private $sender;       // declare senderid of user 
     private $route;         // declare route of user 
@@ -95,14 +93,9 @@
         }
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        try {
-            $response = $client->request('POST', $url, ['query' => $params]);
-            $body     = json_decode($response->getBody()->getContents(),TRUE); 
-            return $body;
-        } catch (ClientException $e) {
-            $response = json_decode($e->getResponse()->getBody()->getContents(), true);
-            return $response;
-        }
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $body     = json_decode($response->getBody()->getContents(),TRUE); 
+        return $body;
     }
     
     /*****************************************************************************************
