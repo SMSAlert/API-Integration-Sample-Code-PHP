@@ -3,7 +3,7 @@
  *  @author    Cozy Vision Technologies Pvt. Ltd.
  *  @copyright 2010-2020 Cozy Vision Technologies Pvt. Ltd.
  */
- include("smsalert/vendor/guzzle/vendor/autoload.php");
+ include(dirname(__DIR__,1)."/vendor/guzzle/vendor/autoload.php");
  use GuzzleHttp\Client;
  
  class Smsalert{
@@ -639,8 +639,20 @@ XML;
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
-
-    /*****************************************************************************************
+	
+	/*****************************************************************************************
+    * get countries list
+    *****************************************************************************************/
+    public function getCountries()
+    {
+        $url      = $this->url.'/api/countrylist.json';
+        $client   = new Client();
+        $response = $client->request('POST', $url);
+        $body     = json_decode($response->getBody(),TRUE); 
+        return $body;
+    }
+	
+	/*****************************************************************************************
     * used to set apikey * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
     *****************************************************************************************/
     function authWithApikey($apikey)
