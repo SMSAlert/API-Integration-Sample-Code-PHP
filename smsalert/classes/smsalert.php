@@ -12,7 +12,43 @@
     private $url='http://www.smsalert.co.in';   // Define url
     private $authParams=array();  // Define Authparams  
     private $prefix;    
+	
+	/*****************************************************************************************
+    * used to set apikey * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
+    *****************************************************************************************/
+    function authWithApikey($apikey)
+    {
+        $this->authParams = array('apikey'=>$apikey);
+        return $this;
+    }
 
+    /*****************************************************************************************
+    * used to set username and password * * * * * * * * *  * * * * * * * * * * * * * * * * * * 
+    *****************************************************************************************/
+    function authWithUserIdPwd($user,$pwd)
+    {
+        $this->authParams = array('user'=>$user,'pwd'=>$pwd);
+        return $this;
+    }
+
+    /*****************************************************************************************
+    * used to set route * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
+    *****************************************************************************************/
+    public function setRoute($route)
+    {
+        $this->route     = $route;
+        return $this;
+    } 
+
+    /*****************************************************************************************
+    * used to set sender id * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * *
+    *****************************************************************************************/
+    public function setSender($sender)
+    {
+        $this->sender    = $sender;
+        return $this;
+    }
+	
     /*****************************************************************************************
     * Internal function for authenticate parameters to be used only for this class.  
     *****************************************************************************************/
@@ -113,7 +149,7 @@
         $params   = array('batchid'=>$batchid,'schedule'=>$schedule);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -131,7 +167,7 @@
         $params   = array('batchid'=>$batchid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -151,7 +187,7 @@
         $params   = array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -169,7 +205,7 @@
         $params   = array('batchid'=>$batchid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;   
     }
@@ -181,7 +217,7 @@
     {
         $url      = $this->url.'/api/senderlist.json';
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(),'http_errors'=>false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -193,7 +229,7 @@
     {
         $url      = $this->url.'/api/user.json';
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -236,7 +272,7 @@ XML;
         $url      = $this->url.'/api/xmlpush.json';
         $params   = array('data'=>$xmldata); 
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -256,7 +292,7 @@ XML;
         $params   = array('limit'=>$limit,'page'=>$page,'order'=>$order);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -274,7 +310,7 @@ XML;
         $params   = array('name'=>$grpname);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -292,7 +328,7 @@ XML;
         $params   = array('id'=>$grpid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -311,7 +347,7 @@ XML;
         $params   = array('id'=>$grpid,'name'=>$grpname);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -333,7 +369,7 @@ XML;
         $params['route'] = !empty($this->route) ? $this->route : '';
         $params          = array_merge($params,$this->getAuthParams());
         $client          = new Client();
-        $response        = $client->request('POST', $url, ['query' => $params]);
+        $response        = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body            = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -354,7 +390,7 @@ XML;
         $params   = array('group_id'=>$groupid,'limit'=>$limit,'page'=>$page,'order'=>$order);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -374,7 +410,7 @@ XML;
         $params   = array('grpname'=>$grpname,'name'=>$name,'number'=>$this->formatNumber($number));
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -394,7 +430,7 @@ XML;
         $params   = array('id'=>$contactid,'name'=>$name,'number'=>$this->formatNumber($number));
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -412,7 +448,7 @@ XML;
         $params   = array('id'=>$id);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -467,7 +503,7 @@ XML;
     {
         $url      = $this->url.'/api/templatelist.json';      
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -486,7 +522,7 @@ XML;
         $params   = array('name'=>$name,'text'=>$text);
         $params   = array_merge($params,$this->getAuthParams());     
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -506,7 +542,7 @@ XML;
         $params   = array('name'=>$name,'text'=>$text,'id'=>$id);
         $params   = array_merge($params,$this->getAuthParams());     
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -524,7 +560,7 @@ XML;
         $params   = array('id'=>$id);
         $params   = array_merge($params,$this->getAuthParams()); 
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;    
     }
@@ -536,7 +572,7 @@ XML;
     {
         $url      = $this->url.'/api/creditstatus.json';
          $client  = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams()]);
+        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -558,7 +594,7 @@ XML;
         			'mobilenumber'=>$this->formatNumber($number),'emailid'=>$emailid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body; 
     }
@@ -579,7 +615,7 @@ XML;
         $params   = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'template'=>$template);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body 	  = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -599,7 +635,7 @@ XML;
         $params   = array('code'=>$otp,'mobileno'=>$this->formatNumber($mobileno));
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -617,7 +653,7 @@ XML;
         $params   = array('url'=>$longurl);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -635,7 +671,7 @@ XML;
         $params   = array('id'=>$urlid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params]);
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -647,45 +683,9 @@ XML;
     {
         $url      = $this->url.'/api/countrylist.json';
         $client   = new Client();
-        $response = $client->request('POST', $url);
+        $response = $client->request('POST', $url, ['http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
-	
-	/*****************************************************************************************
-    * used to set apikey * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
-    *****************************************************************************************/
-    function authWithApikey($apikey)
-    {
-        $this->authParams = array('apikey'=>$apikey);
-        return $this;
-    }
-
-    /*****************************************************************************************
-    * used to set username and password * * * * * * * * *  * * * * * * * * * * * * * * * * * * 
-    *****************************************************************************************/
-    function authWithUserIdPwd($user,$pwd)
-    {
-        $this->authParams = array('user'=>$user,'pwd'=>$pwd);
-        return $this;
-    }
-
-    /*****************************************************************************************
-    * used to set route * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
-    *****************************************************************************************/
-    public function setRoute($route)
-    {
-        $this->route     = $route;
-        return $this;
-    } 
-
-    /*****************************************************************************************
-    * used to set sender id * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * *
-    *****************************************************************************************/
-    public function setSender($sender)
-    {
-        $this->sender    = $sender;
-        return $this;
-    } 
 }
 ?>
