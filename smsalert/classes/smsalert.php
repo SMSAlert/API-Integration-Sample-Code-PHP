@@ -3,7 +3,7 @@
  *  @author    Cozy Vision Technologies Pvt. Ltd.
  *  @copyright 2010-2020 Cozy Vision Technologies Pvt. Ltd.
  */
- include(dirname(__DIR__,1)."/vendor/guzzle/vendor/autoload.php");
+ include(dirname(__DIR__)."/vendor/guzzle/vendor/autoload.php");
  use GuzzleHttp\Client;
  
  class Smsalert{
@@ -494,7 +494,10 @@ XML;
         $xmldata = $msg->asXML();
         $url     = $this->url.'/api/createcontactxml.json';
         $params  = array('data'=>$xmldata); 
-        return Utility::invoke_api($url,$params);
+        $client   = new Client();
+        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $body     = json_decode($response->getBody(),TRUE); 
+        return $body;
     }
 
     /*****************************************************************************************

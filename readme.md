@@ -38,7 +38,10 @@
     $smsalert->setRoute('transactional');
 
 # set senderid 
-    $smsalert->setSender('VIEWIT');    
+    $smsalert->setSender('VIEWIT'); 
+	
+# set force prefix for countrycode 
+    $smsalert->setForcePrefix('91'); 	
 
 ## Support 
 Email :  support@cozyvision.com
