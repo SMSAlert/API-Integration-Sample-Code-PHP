@@ -67,7 +67,7 @@
     *****************************************************************************************/
     private function formatNumber($mobileno)
     {    
-         $prefix   = $this->setForcePrefix('91');
+         $prefix   = $this->prefix;
          $mobileno = explode(',',$mobileno);
          $nos      = preg_replace('/[^0-9]/', '', $mobileno);
          $valid_no = array();
@@ -83,11 +83,12 @@
     }
 
     /*****************************************************************************************
-    * Internal function for set force prefix to be used only for this class.
+    * set force prefix to be used only for this class.
     *****************************************************************************************/
-    private function setForcePrefix($prefix)
+    public function setForcePrefix($prefix="")
     {    
-       return $prefix;
+       $this->prefix    = $prefix;
+       return $this;
     }
     
     /*****************************************************************************************
