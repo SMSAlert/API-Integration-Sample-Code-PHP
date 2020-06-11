@@ -4,14 +4,16 @@ include("smsalert/classes/Smsalert.php");
 // include("smsalert/vendor/guzzle/vendor/autoload.php");
 
 
-$apikey='';     // write your apikey in between ''
-$senderid='';	// write your senderid in between ''
-$route='';      // write your route in between ''
-$username = ''; // write your username in between ''
-$pass='';	// write your pass in between ''
-$smsalert = (new Smsalert()) 		
+$apikey		='';    // write your apikey in between ''
+$senderid	='';	// write your senderid in between ''
+$route		='';    // write your route in between ''
+$username 	=''; 	// write your username in between ''
+$pass		='';	// write your pass in between ''
+$prefix		='';	// write your country code here eg. 91
+$smsalert 	= (new Smsalert()) 		
 	   ->authWithUserIdPwd($username,$pass)
 	   ->setRoute($route)
+	   ->setForcePrefix($prefix)
 	   ->setSender($senderid);
 
 //======== for send sms ================
@@ -95,7 +97,7 @@ $contactid="2662121"; // enter contact id to delete contact
 $result = $smsalert->deleteContact($contactid);	   
 
 //============ For Import Contact ==============
-$grpname = 'Tests'; // enter Group name in which you want to add contact
+$grpname = 'Groupsecond'; // enter Group name in which you want to add contact
 $datas = array(array('person_name'=>'Ankit Sharma','number'=>'8999999999'));	    
 $result = $smsalert->importXmlContact($datas,$grpname);	 	   
 
