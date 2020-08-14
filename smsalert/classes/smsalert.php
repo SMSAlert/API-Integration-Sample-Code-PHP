@@ -259,13 +259,18 @@ XML;
         }else{
             $user->addAttribute('username', $this->authParams['user']);
             $user->addAttribute('password', $this->authParams['pwd']); 
-        }        
+        } 
+		if(!empty($this->route))
+		{
+			$user->addAttribute('route', $this->route);
+		}
+		
         foreach($sms_datas as $sms_data){
             $sms     = $msg->addChild('sms');
             $sms->addAttribute('text', $sms_data['sms_body']);
             $address = $sms->addChild('address');
-            $address->addAttribute('from', $this->route);
-            $address->addAttribute('to', $sms_data['number']);
+            $address->addAttribute('from', $this->sender);
+            $address->addAttribute('to', $this->formatNumber($sms_data['number']));
         }
         if($msg->count() <= 1)
         { return false; }         
