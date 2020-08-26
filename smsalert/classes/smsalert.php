@@ -103,11 +103,13 @@
     * $reference(optional) - reference no. for delivered msg report eg : '125546';
     * $dlrurl(optional)    - callback url for delivery notification(url encoded format) 
                              eg : http://www.test.com/dlr.php
+	* $shortenurl(optional) - convert your long url into short url							
     *****************************************************************************************/
-    public function send($mobileno,$text,$schedule=null,$reference=null,$dlrurl=null)
+    public function send($mobileno,$text,$schedule=null,$reference=null,$dlrurl=null,$shortenurl=false)
     {   
         $url    = $this->url.'/api/push.json';
-        $params = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);  
+        $params = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);
+		if($shortenurl){$params['shortenurl'] = 1;}		
         if(!empty($schedule))
         {   
             $params['schedule'] = $schedule; // for Schedule Sms 
@@ -242,8 +244,9 @@
     * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
     * sms_datas(mandatory)  - array of number and msg to send sms
                               eg:array(array('number'=>'8010551055','sms_body'=>'New Messages'));
+	* $shortenurl(optional)  - convert your long url into short url						  							  
     *****************************************************************************************/
-    public  function sendSmsXml($sms_datas)
+    public  function sendSmsXml($sms_datas,$shortenurl=false)
     {   if(is_array($sms_datas) && sizeof($sms_datas) == 0)
         {return false;}
 $xmlstr = <<<XML
@@ -264,6 +267,7 @@ XML;
 		{
 			$user->addAttribute('route', $this->route);
 		}
+		if($shortenurl){$user->addAttribute('shortenurl', 1);}
 		
         foreach($sms_datas as $sms_data){
             $sms     = $msg->addChild('sms');
