@@ -4,10 +4,10 @@
 
 ## Paramerer Details
 
-> __username :__ username of smsalert account
-> __password :__ password of smsalert account
-> __number :__ single or multiple mobile numbers (seperated by comma)
-> __message :__ Message Content to be sent
+>__username :__ username of smsalert account
+>__password :__ password of smsalert account
+>__number :__ single or multiple mobile numbers (seperated by comma)
+>__message :__ Message Content to be sent
 
 ## Usage 
 # include Class file
