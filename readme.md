@@ -21,6 +21,7 @@ include_once('smsalert/classes/Smsalert.php');
 ```
 $SMSALERT_USER = ''; //change here
 $SMSALERT_PWD  = ''; //change here
+
 $smsalert      = (new Smsalert())
 		->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
 ```
@@ -29,6 +30,7 @@ $smsalert      = (new Smsalert())
 ```
 $MOBILENO      = ''; //change here
 $TEXT          = ''; //change here
+
 $smsalert->setSender('VIEWIT')
          ->send($MOBILENO, $TEXT); 
 ```
@@ -38,18 +40,25 @@ $smsalert->setSender('VIEWIT')
 $MOBILENO      = ''; //change here
 $TEXT          = ''; //change here
 $SCHEDULE      = ''; //change here
+
 $smsalert->setSender('VIEWIT')
          ->send($MOBILENO, $TEXT, $SCHEDULE); 
 ```
 
 #### set route 
+```
 $smsalert->setRoute('transactional');
+```
 
 #### set senderid 
+```
 $smsalert->setSender('VIEWIT'); 
+```
 	
 #### set force prefix for countrycode 
-$smsalert->setForcePrefix('91'); 	
+```
+$smsalert->setForcePrefix('91'); 
+```	
 
 #### Support
 ```
