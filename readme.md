@@ -1,14 +1,14 @@
 ## Overview
 
-**Sms Alert PHP library for sending transactional/promotional SMS, through your custom code. Easy to integrate, just write 2 lines of code to send SMS.**
+*Sms Alert PHP library for sending transactional/promotional SMS, through your custom code. Easy to integrate, just write 2 lines of code to send SMS.*
 
 ## Paramerer Details
 
 ```
-username : username of smsalert account
-password : password of smsalert account
-number   : single or multiple mobile numbers (seperated by comma)
-message  : Message Content to be sent
+SMSALERT_USER 	: username of smsalert account
+SMSALERT_PWD 	: password of smsalert account
+MOBILENO	: single or multiple mobile numbers (seperated by comma)
+TEXT	  	: Message Content to be sent
 ```
 
 ## Usage
@@ -26,11 +26,11 @@ $smsalert      = (new Smsalert())
     
 #### send quick sms
 ```
-    $MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
-                            multiple numbers can be sent seperated by comma(,)
-    $TEXT          = ''; //sms content to be sent without encoded                           
-    $smsalert->setSender('VIEWIT')
-             ->send($MOBILENO,$TEXT); 
+$MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
+                        multiple numbers can be sent seperated by comma(,)
+$TEXT          = ''; //sms content to be sent without encoded                           
+$smsalert->setSender('VIEWIT')
+         ->send($MOBILENO, $TEXT); 
 ```
 
 # send schedule sms
