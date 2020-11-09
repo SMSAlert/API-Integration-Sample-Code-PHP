@@ -7,16 +7,16 @@
 ```
 username : username of smsalert account
 password : password of smsalert account
-number : single or multiple mobile numbers (seperated by comma)
-message : Message Content to be sent
+number   : single or multiple mobile numbers (seperated by comma)
+message  : Message Content to be sent
 ```
 
 ## Usage
 
-###### include Class file
+##### include Class file
 include_once('smsalert/classes/Smsalert.php');
 
-###### create object and set authentication parameter
+##### create object and set authentication parameter
 ```
 $SMSALERT_USER = '';  //enter your smsalert username
 $SMSALERT_PWD  = '';  //enter your smsalert password
@@ -24,12 +24,14 @@ $smsalert      = (new Smsalert())
 		->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
 ```
     
-# send quick sms
+##### send quick sms
+```
     $MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
                             multiple numbers can be sent seperated by comma(,)
     $TEXT          = ''; //sms content to be sent without encoded                           
     $smsalert->setSender('VIEWIT')
              ->send($MOBILENO,$TEXT); 
+```
 
 # send schedule sms
      $MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
