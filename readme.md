@@ -2,7 +2,7 @@
 
 *Sms Alert PHP library for sending transactional/promotional SMS, through your custom code. Easy to integrate, just write 2 lines of code to send SMS.*
 
-## Paramerer Details
+### Paramerer Details
 
 ```
 SMSALERT_USER 	: username of your smsalert account
@@ -12,7 +12,7 @@ TEXT	  	: message content to be sent
 $SCHEDULE	: future schedule date and time when you wish to send sms
 ```
 
-## Usage
+### Usage
 
 #### include Class file
 include_once('smsalert/classes/Smsalert.php');
@@ -58,7 +58,7 @@ $smsalert->setSender('VIEWIT');
 #### set force prefix for countrycode 
 ```
 $smsalert->setForcePrefix('91'); 
-```	
+```
 
 #### Support
 ```
