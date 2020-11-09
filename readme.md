@@ -1,6 +1,8 @@
 ## Overview
 
-*Sms Alert PHP library for sending transactional/promotional SMS, through your custom code. Easy to integrate, just write 2 lines of code to send SMS.*
+![SMS Alert Logo](https://www.smsalert.co.in/theme/Smsalert/img/smsalert.jpg)
+Format: ![Alt Text](url)
+SMS Alert PHP library for sending transactional/promotional SMS, through your custom code. Easy to integrate, just write 2 lines of code to send SMS.
 
 ### Paramerer Details
 
