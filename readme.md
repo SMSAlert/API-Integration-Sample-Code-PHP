@@ -1,13 +1,13 @@
 ## Overview
 
-**Sms Alert Php library for sending transactional/promotional SMS, through your custom code. Easy to integrate, you just need to write 2 lines of code to send SMS.**
+**Sms Alert PHP library for sending transactional/promotional SMS, through your custom code. Easy to integrate, just write 2 lines of code to send SMS.**
 
 ## Paramerer Details
 
-* username : username of smsalert
-* password : password of smsalert
-* number : single or multiple mobile numbers (seperated by comma)
-* message : Message Content to be sent
+> __username :__ username of smsalert account
+> __password :__ password of smsalert account
+> __number :__ single or multiple mobile numbers (seperated by comma)
+> __message :__ Message Content to be sent
 
 ## Usage 
 # include Class file
