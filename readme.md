@@ -4,18 +4,21 @@
 
 ## Paramerer Details
 
-```username : username of smsalert account
+```
+username : username of smsalert account
 password : password of smsalert account
 number : single or multiple mobile numbers (seperated by comma)
 message : Message Content to be sent
 ```
 
-## Usage 
+## Usage
+
 ###### include Class file
 include_once('smsalert/classes/Smsalert.php');
 
-# create object and set authentication parameter
-```$SMSALERT_USER = '';  //enter your smsalert username
+###### create object and set authentication parameter
+```
+$SMSALERT_USER = '';  //enter your smsalert username
 $SMSALERT_PWD  = '';  //enter your smsalert password
 $smsalert      = (new Smsalert())
 		->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
