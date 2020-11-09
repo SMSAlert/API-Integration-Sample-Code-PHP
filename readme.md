@@ -12,7 +12,7 @@ SMSALERT_USER 	: username of your smsalert account
 SMSALERT_PWD 	: password of your smsalert account
 MOBILENO	: single or multiple mobile numbers (seperated by comma), with or without country code
 TEXT	  	: message content to be sent
-$SCHEDULE	: future schedule date and time when you wish to send sms
+SCHEDULE	: future schedule date and time when you wish to send sms
 ```
 
 ### Usage
