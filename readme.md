@@ -34,20 +34,22 @@ $smsalert->setSender('VIEWIT')
 ```
 
 #### send schedule sms
+```
 $MOBILENO      = ''; //change here
 $TEXT          = ''; //change here
 $SCHEDULE      = ''; //change here
 $smsalert->setSender('VIEWIT')
          ->send($MOBILENO, $TEXT, $SCHEDULE); 
+```
 
 #### set route 
-    $smsalert->setRoute('transactional');
+$smsalert->setRoute('transactional');
 
 #### set senderid 
-    $smsalert->setSender('VIEWIT'); 
+$smsalert->setSender('VIEWIT'); 
 	
 #### set force prefix for countrycode 
-    $smsalert->setForcePrefix('91'); 	
+$smsalert->setForcePrefix('91'); 	
 
 #### Support
 ```
