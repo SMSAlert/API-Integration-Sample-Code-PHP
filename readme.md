@@ -4,21 +4,22 @@
 
 ## Paramerer Details
 
-```__username :__ username of smsalert account
-__password :__ password of smsalert account
-__number :__ single or multiple mobile numbers (seperated by comma)
-__message :__ Message Content to be sent
+```username : username of smsalert account
+password : password of smsalert account
+number : single or multiple mobile numbers (seperated by comma)
+message : Message Content to be sent
 ```
 
 ## Usage 
-# include Class file
-    include_once('smsalert/classes/Smsalert.php');
+###### include Class file
+include_once('smsalert/classes/Smsalert.php');
 
 # create object and set authentication parameter
-    $SMSALERT_USER = '';  //enter your smsalert username
-    $SMSALERT_PWD  = '';  //enter your smsalert password
-    $smsalert      = (new Smsalert())
-                     ->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
+```$SMSALERT_USER = '';  //enter your smsalert username
+$SMSALERT_PWD  = '';  //enter your smsalert password
+$smsalert      = (new Smsalert())
+		->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
+```
     
 # send quick sms
     $MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
