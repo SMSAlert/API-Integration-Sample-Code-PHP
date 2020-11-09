@@ -5,10 +5,11 @@
 ## Paramerer Details
 
 ```
-SMSALERT_USER 	: username of smsalert account
-SMSALERT_PWD 	: password of smsalert account
-MOBILENO	: single or multiple mobile numbers (seperated by comma)
-TEXT	  	: Message Content to be sent
+SMSALERT_USER 	: username of your smsalert account
+SMSALERT_PWD 	: password of your smsalert account
+MOBILENO	: single or multiple mobile numbers (seperated by comma), with or without country code
+TEXT	  	: message content to be sent
+$SCHEDULE	: future schedule date and time when you wish to send sms
 ```
 
 ## Usage
@@ -18,38 +19,38 @@ include_once('smsalert/classes/Smsalert.php');
 
 #### create object and set authentication parameter
 ```
-$SMSALERT_USER = '';  //enter your smsalert username
-$SMSALERT_PWD  = '';  //enter your smsalert password
+$SMSALERT_USER = ''; //change here
+$SMSALERT_PWD  = ''; //change here
 $smsalert      = (new Smsalert())
 		->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
 ```
     
 #### send quick sms
 ```
-$MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
-                        multiple numbers can be sent seperated by comma(,)
-$TEXT          = ''; //sms content to be sent without encoded                           
+$MOBILENO      = ''; //change here
+$TEXT          = ''; //change here
 $smsalert->setSender('VIEWIT')
          ->send($MOBILENO, $TEXT); 
 ```
 
-# send schedule sms
-     $MOBILENO      = ''; // valid mobile number including country code without leading 0 or + symbol
-                             multiple numbers can be sent seperated by comma(,)
-     $TEXT          = ''; // sms content to be sent without encoded    
-     $SCHEDULE      = ''; // to schedule your messages
-     $smsalert->setSender('VIEWIT')
-             ->send($MOBILENO,$TEXT,$SCHEDULE); 
+#### send schedule sms
+$MOBILENO      = ''; //change here
+$TEXT          = ''; //change here
+$SCHEDULE      = ''; //change here
+$smsalert->setSender('VIEWIT')
+         ->send($MOBILENO, $TEXT, $SCHEDULE); 
 
-# set route 
+#### set route 
     $smsalert->setRoute('transactional');
 
-# set senderid 
+#### set senderid 
     $smsalert->setSender('VIEWIT'); 
 	
-# set force prefix for countrycode 
+#### set force prefix for countrycode 
     $smsalert->setForcePrefix('91'); 	
 
-## Support 
+#### Support
+```
 Email :  support@cozyvision.com
-Phone :  080-1055-1055
+Phone :  (+91)-80-1055-1055
+```
