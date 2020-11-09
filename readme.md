@@ -14,10 +14,12 @@ $SCHEDULE	: future schedule date and time when you wish to send sms
 
 ### Usage
 
-#### include Class file
+#### 1. include Class file
+```
 include_once('smsalert/classes/Smsalert.php');
+```
 
-#### create object and set authentication parameter
+#### 2. create object and set authentication parameter
 ```
 $SMSALERT_USER = ''; //change here
 $SMSALERT_PWD  = ''; //change here
@@ -26,7 +28,7 @@ $smsalert      = (new Smsalert())
 		->authWithUserIdPwd($SMSALERT_USER,$SMSALERT_PWD);
 ```
     
-#### send quick sms
+#### 3. send sms
 ```
 $MOBILENO      = ''; //change here
 $TEXT          = ''; //change here
@@ -34,6 +36,8 @@ $TEXT          = ''; //change here
 $smsalert->setSender('VIEWIT')
          ->send($MOBILENO, $TEXT); 
 ```
+
+### For Advanced Users
 
 #### send schedule sms
 ```
