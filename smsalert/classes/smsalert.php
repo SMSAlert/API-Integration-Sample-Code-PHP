@@ -246,7 +246,7 @@
                               eg:array(array('number'=>'8010551055','sms_body'=>'New Messages'));
 	* $shortenurl(optional)  - convert your long url into short url						  							  
     *****************************************************************************************/
-    public  function sendSmsXml($sms_datas,$shortenurl=false)
+    public  function sendSmsXml($sms_datas,$shortenurl=false,$schedule=null)
     {   if(is_array($sms_datas) && sizeof($sms_datas) == 0)
         {return false;}
 $xmlstr = <<<XML
@@ -267,6 +267,12 @@ XML;
 		{
 			$user->addAttribute('route', $this->route);
 		}
+		
+		if(!empty($schedule))
+		{
+			$user->addAttribute('schedule', $schedule); 
+		}
+		
 		if($shortenurl){$user->addAttribute('shortenurl', 1);}
 		
         foreach($sms_datas as $sms_data){
