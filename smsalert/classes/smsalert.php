@@ -3,10 +3,18 @@
  *  @author    Cozy Vision Technologies Pvt. Ltd.
  *  @copyright 2010-2020 Cozy Vision Technologies Pvt. Ltd.
  */
- include(dirname(__DIR__)."/vendor/guzzle/vendor/autoload.php");
- use GuzzleHttp\Client;
- 
- class Smsalert{
+
+if(file_exists(dirname(__DIR__)."/vendor/guzzle/vendor/autoload.php"))
+{
+	include(dirname(__DIR__)."/vendor/guzzle/vendor/autoload.php");
+}
+else
+{
+	include(dirname(__DIR__)."/vendor/curl/autoload.php");
+}	
+
+use GuzzleHttp\Client;
+class Smsalert{
     private $sender;       // declare senderid of user 
     private $route;         // declare route of user 
     private $url='http://www.smsalert.co.in';   // Define url
@@ -133,7 +141,7 @@
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
         $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody()->getContents(),TRUE); 
+        $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
     

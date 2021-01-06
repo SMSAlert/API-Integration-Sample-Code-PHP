@@ -1,0 +1,8 @@
+{
+"config": {
+        "vendor-dir": "smsalert/vendor/guzzle/vendor/"
+    },
+"require": {
+        "guzzlehttp/guzzle": "*"
+    }
+}
