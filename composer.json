@@ -1,8 +1,14 @@
 {
-"config": {
-        "vendor-dir": "smsalert/vendor/guzzle/vendor/"
+    "name": "smsalert/smsalert",
+    "description": "PHP Library for sending sms",
+    "require": {
+        "php": ">=5.0",
+        "smsalert/smsalert":"dev-master"
     },
-"require": {
-        "guzzlehttp/guzzle": "*"
+	"autoload": {
+		"psr-4": {
+            "SMSAlert\\Lib\\": "vendor/src"
+        }
+		
     }
 }

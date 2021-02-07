@@ -1,8 +1,7 @@
 <?php
 
-include("smsalert/classes/Smsalert.php");
-// include("smsalert/vendor/guzzle/vendor/autoload.php");
-
+include("vendor/autoload.php");
+use SMSAlert\Lib\Smsalert\Smsalert;
 
 $apikey		='';    // write your apikey in between ''
 $senderid	='';	// write your senderid in between ''
@@ -15,7 +14,6 @@ $smsalert 	= (new Smsalert())
 	   ->setRoute($route)
 	   ->setForcePrefix($prefix)
 	   ->setSender($senderid);
-
 //======== for send sms ================
 $numbers='8010551055'; //enter the number on which text to be messaged
 $message="Order again for test"; // write your msg here between ""
