@@ -1,5 +1,5 @@
 <?php
-namespace GuzzleHttp;
+namespace SMSAlert\Lib\Curl;
 Class Responses{
 	private $resp_body = '';
 	

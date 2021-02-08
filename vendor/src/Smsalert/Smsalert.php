@@ -3,17 +3,10 @@
  *  @author    Cozy Vision Technologies Pvt. Ltd.
  *  @copyright 2010-2020 Cozy Vision Technologies Pvt. Ltd.
  */
+namespace SMSAlert\Lib\Smsalert;
 
-if(file_exists(dirname(__DIR__)."/vendor/guzzle/vendor/autoload.php"))
-{
-	include(dirname(__DIR__)."/vendor/guzzle/vendor/autoload.php");
-}
-else
-{
-	include(dirname(__DIR__)."/vendor/curl/autoload.php");
-}	
+use SMSAlert\Lib\Curl\Client;
 
-use GuzzleHttp\Client;
 class Smsalert{
     private $sender;       // declare senderid of user 
     private $route;         // declare route of user 
@@ -598,7 +591,7 @@ XML;
     public function balanceCheck()
     {
         $url      = $this->url.'/api/creditstatus.json';
-         $client  = new Client();
+        $client   = new Client();
         $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
