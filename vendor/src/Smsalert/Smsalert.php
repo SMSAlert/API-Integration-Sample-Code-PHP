@@ -255,7 +255,7 @@ $xmlstr = <<<XML
 <message>
 </message>
 XML;
-        $msg  = new SimpleXMLElement($xmlstr);
+        $msg  = new \SimpleXMLElement($xmlstr);
         $user = $msg->addChild('user');
         if (array_key_exists("apikey",$this->authParams))
         {
@@ -488,7 +488,7 @@ XML;
 <group>
 </group>
 XML;
-        $msg   = new SimpleXMLElement($xmlstr);
+        $msg   = new \SimpleXMLElement($xmlstr);
         $user  = $msg->addChild('user');
         if (array_key_exists("apikey",$this->authParams))
         {
