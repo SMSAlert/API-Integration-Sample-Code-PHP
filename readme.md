@@ -20,7 +20,8 @@ SCHEDULE	: future schedule date and time when you wish to send sms
 
 #### 1. include Class file
 ```
-include_once('smsalert/classes/Smsalert.php');
+include("vendor/autoload.php");
+use SMSAlert\Lib\Smsalert\Smsalert;
 ```
 
 #### 2. create object and set authentication parameter
