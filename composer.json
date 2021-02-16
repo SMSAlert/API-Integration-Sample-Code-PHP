@@ -1,8 +1,8 @@
 {
-    "name": "cozyvision/smsalert",
-    "description": "PHP Library for sending sms",
-    "type": "library",
-    "description": "A PHP wrapper for SMS Alert's API",
-    "keywords": ["sms alert", "sms", "api"],
-    "license": "MIT"
+    "name": "SMSAlert/API-Integration-Sample-Code-PHP",
+    "description": "SMS Alert API wrapper",
+    "require": {
+        "php": ">=5.0",
+        "SMSAlert/package":"1.0"
+    }
 }
