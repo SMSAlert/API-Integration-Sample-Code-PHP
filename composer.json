@@ -1,5 +1,5 @@
 {
-    "name": "SMSAlert/API-Integration-Sample-Code-PHP",
+    "name": "sms-alert/api-integration-sample-code-php",
     "description": "SMS Alert API wrapper",
     "require": {
         "php": ">=5.0",
