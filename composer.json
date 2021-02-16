@@ -1,5 +1,5 @@
 {
-    "name": "smsalert/smsalert",
+    "name": "cozyvision/smsalert",
     "description": "PHP Library for sending sms",
     "require": {
         "php": ">=5.0",
