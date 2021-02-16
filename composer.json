@@ -1,9 +1,9 @@
 {
-    "name": "SMSAlert/API-Integration-Sample-Code-PHP",
+    "name": "smsalert",
     "description": "PHP Library for sending sms",
     "require": {
         "php": ">=5.0",
-        "SMSAlert/API-Integration-Sample-Code-PHP":"dev-master"
+        "https://github.com/SMSAlert/API-Integration-Sample-Code-PHP":"dev-master"
     },
 	"autoload": {
 		"psr-4": {
