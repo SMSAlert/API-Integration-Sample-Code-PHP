@@ -1,9 +1,9 @@
 {
-    "name": "cozyvision/smsalert",
+    "name": "SMSAlert/API-Integration-Sample-Code-PHP",
     "description": "PHP Library for sending sms",
     "require": {
         "php": ">=5.0",
-        "cozyvision/smsalert":"dev-master"
+        "SMSAlert/API-Integration-Sample-Code-PHP":"dev-master"
     },
 	"autoload": {
 		"psr-4": {
