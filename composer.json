@@ -1,7 +1,8 @@
 {
     "name": "cozyvision/smsalert",
     "description": "PHP Library for sending sms",
-    "require": {
-        "php": ">=5.0"
-    }
+    "type": "library",
+    "description": "A PHP wrapper for SMS Alert's API",
+    "keywords": ["sms alert", "sms", "api"],
+    "license": "MIT"
 }
