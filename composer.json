@@ -3,7 +3,7 @@
     "description": "PHP Library for sending sms",
     "require": {
         "php": ">=5.0",
-        "smsalert/smsalert":"dev-master"
+        "cozyvision/smsalert":"dev-master"
     },
 	"autoload": {
 		"psr-4": {
