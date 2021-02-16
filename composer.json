@@ -3,11 +3,5 @@
     "description": "PHP Library for sending sms",
     "require": {
         "php": ">=5.0"
-    },
-	"autoload": {
-		"psr-4": {
-            "SMSAlert\\Lib\\": "vendor/src"
-        }
-		
     }
 }
