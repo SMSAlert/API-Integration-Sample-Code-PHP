@@ -1,5 +1,5 @@
 {
-    "name": "smsalert/api-integration-sample-code-php",
+    "name": "smsalert/php-sdk",
    "smsalert/api-integration-sample-code-php":"dev-main",	
     "autoload": {
 		"psr-4": {
