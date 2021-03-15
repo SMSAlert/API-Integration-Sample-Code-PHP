@@ -1,7 +1,10 @@
 {
     "name": "smsalert/api-integration-sample-code-php",
-    "description": "SMS Alert API wrapper",
-    "require": {
-        "php": ">=7.4"
-    }
+   "smsalert/api-integration-sample-code-php":"dev-main",	
+    "autoload": {
+		"psr-4": {
+            "SMSAlert\\Lib\\": "vendor/src"
+        }		
+    },
+    "description": "PHP Library for sending sms"    
 }
