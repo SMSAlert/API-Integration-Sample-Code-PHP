@@ -4,7 +4,7 @@ include("vendor/autoload.php");
 use SMSAlert\Lib\Smsalert\Smsalert;
 
 $apikey		='';    // write your apikey in between ''
-$senderid	='';	// write your senderid in between ''
+$senderid	='CVDEMO';	// write your senderid in between ''
 $route		='';    // write your route in between ''
 $username 	=''; 	// write your username in between ''
 $pass		='';	// write your pass in between ''
