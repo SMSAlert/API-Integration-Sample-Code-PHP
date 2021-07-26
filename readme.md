@@ -50,7 +50,7 @@ $MOBILENO      = ''; //change here
 $TEXT          = ''; //change here
 $SCHEDULE      = ''; //change here
 
-$smsalert->setSender('VIEWIT')
+$smsalert->setSender('CVDEMO')
          ->send($MOBILENO, $TEXT, $SCHEDULE); 
 ```
 
@@ -61,7 +61,7 @@ $smsalert->setRoute('transactional');
 
 #### set senderid 
 ```
-$smsalert->setSender('VIEWIT'); 
+$smsalert->setSender('CVDEMO'); 
 ```
 	
 #### set force prefix for countrycode 
