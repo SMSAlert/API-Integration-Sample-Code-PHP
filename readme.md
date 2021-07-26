@@ -38,7 +38,7 @@ $smsalert      = (new Smsalert())
 $MOBILENO      = ''; //change here
 $TEXT          = ''; //change here
 
-$smsalert->setSender('VIEWIT')
+$smsalert->setSender('CVDEMO')
          ->send($MOBILENO, $TEXT); 
 ```
 
