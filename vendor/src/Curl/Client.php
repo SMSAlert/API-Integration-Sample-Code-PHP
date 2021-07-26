@@ -5,7 +5,7 @@ Class Client{
 	private $response = '';
 	private $content = '';
 	
-	public function request($method="GET",$url,$params, $headers=array(), $curl_opts=array())
+	public function request($method="GET",$url=null,$params=array(), $headers=array(), $curl_opts=array())
 	{
 		$params 		= $params['query'];
 		$http_errors    = (!empty($params['http_errors'])) ? $params['http_errors']:false;
