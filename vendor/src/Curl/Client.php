@@ -7,7 +7,7 @@ Class Client{
 	
 	public function request($method="GET",$url=null,$params=array(), $headers=array(), $curl_opts=array())
 	{
-		$params 		= $params['query'];
+		$params 		= (!empty($params['json']))?$params['json'] : $params['query'];
 		$http_errors    = (!empty($params['http_errors'])) ? $params['http_errors']:false;
 		
 		if(strtolower($method)!='post')
