@@ -133,7 +133,7 @@ class Smsalert{
         }
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -153,7 +153,7 @@ class Smsalert{
         $params   = array('batchid'=>$batchid,'schedule'=>$schedule);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -171,7 +171,7 @@ class Smsalert{
         $params   = array('batchid'=>$batchid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -191,7 +191,7 @@ class Smsalert{
         $params   = array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -209,7 +209,7 @@ class Smsalert{
         $params   = array('batchid'=>$batchid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;   
     }
@@ -221,7 +221,7 @@ class Smsalert{
     {
         $url      = $this->url.'/api/senderlist.json';
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(),'http_errors'=>false]);
+        $response = $client->request('POST', $url, ['json' => $this->getAuthParams(),'http_errors'=>false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;  
     }
@@ -233,7 +233,7 @@ class Smsalert{
     {
         $url      = $this->url.'/api/user.json';
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -289,7 +289,7 @@ XML;
         $url      = $this->url.'/api/xmlpush.json';
         $params   = array('data'=>$xmldata); 
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -309,7 +309,7 @@ XML;
         $params   = array('limit'=>$limit,'page'=>$page,'order'=>$order);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -327,7 +327,7 @@ XML;
         $params   = array('name'=>$grpname);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -345,7 +345,7 @@ XML;
         $params   = array('id'=>$grpid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -364,7 +364,7 @@ XML;
         $params   = array('id'=>$grpid,'name'=>$grpname);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -386,7 +386,7 @@ XML;
         $params['route'] = !empty($this->route) ? $this->route : '';
         $params          = array_merge($params,$this->getAuthParams());
         $client          = new Client();
-        $response        = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response        = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body            = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -407,7 +407,7 @@ XML;
         $params   = array('group_id'=>$groupid,'limit'=>$limit,'page'=>$page,'order'=>$order);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -427,7 +427,7 @@ XML;
         $params   = array('grpname'=>$grpname,'name'=>$name,'number'=>$this->formatNumber($number));
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -447,7 +447,7 @@ XML;
         $params   = array('id'=>$contactid,'name'=>$name,'number'=>$this->formatNumber($number));
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -465,7 +465,7 @@ XML;
         $params   = array('id'=>$id);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -511,7 +511,7 @@ XML;
         $url     = $this->url.'/api/createcontactxml.json';
         $params  = array('data'=>$xmldata); 
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -523,7 +523,7 @@ XML;
     {
         $url      = $this->url.'/api/templatelist.json';      
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -542,7 +542,7 @@ XML;
         $params   = array('name'=>$name,'text'=>$text);
         $params   = array_merge($params,$this->getAuthParams());     
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -562,7 +562,7 @@ XML;
         $params   = array('name'=>$name,'text'=>$text,'id'=>$id);
         $params   = array_merge($params,$this->getAuthParams());     
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -580,7 +580,7 @@ XML;
         $params   = array('id'=>$id);
         $params   = array_merge($params,$this->getAuthParams()); 
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;    
     }
@@ -592,7 +592,7 @@ XML;
     {
         $url      = $this->url.'/api/creditstatus.json';
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $this->getAuthParams(), 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $this->getAuthParams(), 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -614,7 +614,7 @@ XML;
         			'mobilenumber'=>$this->formatNumber($number),'emailid'=>$emailid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body; 
     }
@@ -635,7 +635,7 @@ XML;
         $params   = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'template'=>$template);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body 	  = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -655,7 +655,7 @@ XML;
         $params   = array('code'=>$otp,'mobileno'=>$this->formatNumber($mobileno));
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -673,7 +673,7 @@ XML;
         $params   = array('url'=>$longurl);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
@@ -691,7 +691,7 @@ XML;
         $params   = array('id'=>$urlid);
         $params   = array_merge($params,$this->getAuthParams());
         $client   = new Client();
-        $response = $client->request('POST', $url, ['query' => $params, 'http_errors' => false]);
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
