@@ -6,16 +6,47 @@
 namespace SMSAlert\Lib\Smsalert;
 
 use SMSAlert\Lib\Curl\Client;
-
+/**
+ * Smsalert class. 
+ */
 class Smsalert{
-    private $sender;       // declare senderid of user 
-    private $route;         // declare route of user 
-    private $url='http://www.smsalert.co.in';   // Define url
-    private $authParams=array();  // Define Authparams  
+    /**
+     * Sender.
+     *
+     * @var string Declare senderid of user.
+     */
+    private $sender;      
+    /**
+     * Route.
+     *
+     * @var string Declare route of user.
+     */
+    private $route;          
+    /**
+     * Url.
+     *
+     * @var string Define url.
+     */
+    private $url='http://www.smsalert.co.in';   
+    /**
+     * Authentication parameters.
+     *
+     * @var array Define Authparams. 
+     */
+    private $authParams=array();   
+    /**
+     * Prefix.
+     *
+     * @var string Prefix eg.91.
+     */
     private $prefix;    
 	
 	/*****************************************************************************************
-    * used to set apikey * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Used to set apikey.
+    * 
+    * @param string $apikey - API key.
+    *
+    * @return object
     *****************************************************************************************/
     function authWithApikey($apikey)
     {
@@ -24,7 +55,12 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to set username and password * * * * * * * * *  * * * * * * * * * * * * * * * * * * 
+    * Used to set username and password.
+    * 
+    * @param string $user - SMS Alert account username.
+    * @param string $pwd  - SMS Alert account password.
+    *
+    * @return object 
     *****************************************************************************************/
     function authWithUserIdPwd($user,$pwd)
     {
@@ -33,7 +69,11 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to set route * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * * *
+    * Used to set route. 
+    * 
+    * @param string $route - route
+    *
+    * @return object
     *****************************************************************************************/
     public function setRoute($route)
     {
@@ -42,7 +82,11 @@ class Smsalert{
     } 
 
     /*****************************************************************************************
-    * used to set sender id * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * *
+    * Used to set sender id. 
+    * 
+    * @param string $sender - Sender ID.
+    *
+    * @return object
     *****************************************************************************************/
     public function setSender($sender)
     {
@@ -51,7 +95,9 @@ class Smsalert{
     }
 	
     /*****************************************************************************************
-    * Internal function for authenticate parameters to be used only for this class.  
+    * Internal function for authenticate parameters to be used only for this class. 
+    * 
+    * @return object  
     *****************************************************************************************/
     private function getAuthParams()
     {
@@ -64,7 +110,11 @@ class Smsalert{
     }
     
     /*****************************************************************************************
-    * Internal function for format number to be used only for this class.
+    * Internal function for format number to be used only for this class.   
+    * 
+    * @param string $mobileno - Mobile number
+    *
+    * @return string
     *****************************************************************************************/
     private function formatNumber($mobileno)
     {    
@@ -84,7 +134,11 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * set force prefix to be used only for this class.
+    * Set force prefix to be used only for this class.
+    *
+    * @param string $prefix - prefix eg.91.
+    *
+    * @return object
     *****************************************************************************************/
     public function setForcePrefix($prefix="")
     {    
@@ -93,18 +147,17 @@ class Smsalert{
     }
     
     /*****************************************************************************************
-    * used to send or schedule sms
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * mobileno(mandatory)  - valid mobile number including country code without leading 0 or + symbol
-    *                        multiple numbers can be sent seperated by comma(,)
-    * text(mandatory)      - sms content to be sent without encoded 
-    * schedule(optional)   - schedule your messages eg : '2020-06-10 12:00:02';
-    * $reference(optional) - reference no. for delivered msg report eg : '125546';
-    * $dlrurl(optional)    - callback url for delivery notification(url encoded format) 
-                             eg : http://www.test.com/dlr.php
-	* $shortenurl(optional) - convert your long url into short url							
+    * Sending or scheduling sms.
+   
+    * @param string $mobileno  - (mandatory) Valid mobile number including country code without leading 0 or + symbol
+    *                             multiple numbers can be sent seperated by comma(,).
+    * @param string $text      - (mandatory) SMS content to be sent without encoded. 
+    * @param string $schedule  - (optional) Schedule your messages eg : '2020-06-10 12:00:02'.
+    * @param string $reference - (optional) Reference no. for delivered msg report eg : '125546'.
+    * @param string $dlrurl    - (optional) Callback url for delivery notification(url encoded format) eg : http://www.test.com/dlr.php.
+	* @param bool $shortenurl  - (optional) Convert your long url into short url.	
+    *
+    * @return array
     *****************************************************************************************/
     public function send($mobileno,$text,$schedule=null,$reference=null,$dlrurl=null,$shortenurl=false)
     {   
@@ -139,13 +192,13 @@ class Smsalert{
     }
     
     /*****************************************************************************************
-    * used to edit schedule sms
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * batchid(mandatory)    - batch id of the scheduled sms, received while sending the sms through API
-    * schedule(mandatory)   - Date and time for updated schedule (Format: YYYY-MM-DD HH:MM:SS)
-                              eg : '2020-06-10 12:00:02';
+    * Used to edit schedule sms.
+    * 
+    * @param int $batchid     - (mandatory) batch id of the scheduled sms, received while sending the sms through API.
+    * @param string $schedule - (mandatory) Date and time for updated schedule (Format: YYYY-MM-DD HH:MM:SS)
+    *                            eg : '2020-06-10 12:00:02'.
+    *
+    * @return array
     *****************************************************************************************/
     public function editSchedule($batchid,$schedule)
     {
@@ -159,11 +212,11 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to cancel schedule sms
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * batchid(mandatory)  - batch id of the scheduled sms, received while sending the sms through API
+    * Used to cancel schedule sms.
+    *
+    * @param int $batchid  - (mandatory) batch id of the scheduled sms, received while sending the sms through API.
+    *
+    * @return array
     *****************************************************************************************/
     public function cancelSchedule($batchid)
     {
@@ -177,13 +230,13 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to send sms report
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * limit(optional)     - to get the list of records available per page. Default value for page is 10.
-    * page(optional)      - to get the list of records from the respective pages. Default value for page is 1.
-    * schedule(optional)  - schedule of sms report
+    * Used to send sms report.
+    *
+    * @param int $limit    - (optional) To get the list of records available per page. Default value for page is 10.
+    * @param int $page     - (optional) To get the list of records from the respective pages. Default value for page is 1.
+    * @param int $schedule - (optional) Schedule of sms report.
+    *
+    * @return array
     *****************************************************************************************/
     public function smsReport($limit=10,$page=1,$schedule=1)
     {
@@ -197,11 +250,11 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to pull sms report
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * batchid(mandatory)  - batch id received in response to every push request
+    * Used to pull sms report.
+    * 
+    * @param int $batchid - (mandatory) Batch id received in response to every push request.
+    *
+    * @return array
     *****************************************************************************************/
     public function pullReport($batchid)
     {   
@@ -215,7 +268,9 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to retrieve senderid list * * * * * * * * *  * * * * * * * * * * * * * * * * * * * 
+    * Used to retrieve senderid list.
+    * 
+    * @return array 
     *****************************************************************************************/
     public function getSenderId()
     {
@@ -227,7 +282,9 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to retrieve user profile * * * * * * * * *  * * * * * * * * * * * * * * * * * * * *
+    * Used to retrieve user profile. 
+    * 
+    * @return array 
     *****************************************************************************************/
     public function getUserProfile()
     {
@@ -239,13 +296,13 @@ class Smsalert{
     }
 
     /*****************************************************************************************
-    * used to send sms xml push api
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * sms_datas(mandatory)  - array of number and msg to send sms
-                              eg:array(array('number'=>'8010551055','sms_body'=>'New Messages'));
-	* $shortenurl(optional)  - convert your long url into short url						  							  
+    * Used to send sms xml push api.
+    *
+    * @param array $sms_datas  - (mandatory) Array of number and msg to send sms.
+                                  eg:array(array('number'=>'8010551055','sms_body'=>'New Messages')).
+	* @param bool $shortenurl  - (optional) Convert your long url into short url.
+    * 
+    * @return array 						  							  
     *****************************************************************************************/
     public  function sendSmsXml($sms_datas,$shortenurl=false,$schedule=null)
     {   if(is_array($sms_datas) && sizeof($sms_datas) == 0)
@@ -295,14 +352,14 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to retrieve group list
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * limit(optional)   - to get the list of records available per page. Default value for page is 10
-    * page(optional)    - to get the list of records from the respective pages. Default value for page is 1
-    * order(optional)   - to get the list of records in 'desc' order by default.
-     *****************************************************************************************/
+    * Used to retrieve group list.
+    *
+    * @param int $limit    - (optional) To get the list of records available per page. Default value for page is 10
+    * @param int $page     - (optional) To get the list of records from the respective pages. Default value for page is 1
+    * @param string $order - (optional) To get the list of records in 'desc' order by default.
+    * 
+    * @return array 
+    *****************************************************************************************/
     public function getGroupList($limit=10,$page=1,$order='desc')
     {
         $url      = $this->url.'/api/grouplist.json';
@@ -315,12 +372,12 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to create group
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * grpname(mandatory)   - group name, that you wish to create
-     *****************************************************************************************/
+    * Used to create group.
+    *  
+    * @param string $grpname - (mandatory) group name, that you wish to create.
+    * 
+    * @return array 
+    *****************************************************************************************/
     public function createGroup($grpname)
     {
         $url      = $this->url.'/api/creategroup.json';
@@ -333,12 +390,12 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to delete group
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * grpid(mandatory)   - group id, that you wish to delete
-     *****************************************************************************************/
+    * Used to delete group.
+    *
+    * @param int $grpid  - (mandatory) group id, that you wish to delete.
+    * 
+    * @return array
+    *****************************************************************************************/
     public function deleteGroup($grpid)
     {
         $url      = $this->url.'/api/deletegroup.json';
@@ -351,12 +408,12 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to edit group
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * grpname(mandatory) - the group name that you want to modified
-    * grpid(mandatory)   - group id, that you wish to modified
+    * Used to edit group.
+    *
+    * @param string $grpname - (mandatory) the group name that you want to modified.
+    * @param int $grpid      - (mandatory) group id, that you wish to modified.
+    * 
+    * @return array
      *****************************************************************************************/
     public function editGroup($grpname,$grpid)
     {
@@ -370,14 +427,14 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to send group sms
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * grpid(mandatory)    - group id, that you wish to send sms
-    * text(mandatory)     - sms content to be sent without encoded
-    * schedule(optional)  - date and time for schedule sms for group (Format: YYYY-MM-DD HH:MM:SS)
-                            eg : '2020-06-10 12:00:02';
+    * Used to send group sms.
+    *
+    * @param int $grpid       - (mandatory) group id, that you wish to send sms.
+    * @param string $text     - (mandatory) sms content to be sent without encoded.
+    * @param string $schedule - (optional) date and time for schedule sms for group (Format: YYYY-MM-DD HH:MM:SS)
+    *                            eg : '2020-06-10 12:00:02'.
+    * 
+    * @return array
     *****************************************************************************************/
     public function sendGroupSms($grpid,$text,$schedule=null)
     {
@@ -392,14 +449,14 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to retrieve contact list
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * grpid(mandatory)  - group id, to get contact list of group
-    * limit(optional)   - to get the list of records available per page. Default value for page is 10
-    * page(optional)    - to get the list of records from the respective pages. Default value for page is 1
-    * order(optional)   - to get the list of records in 'desc' order by default.
+    * Used to retrieve contact list.
+    * 
+    * @param int $grpid  - (mandatory) group id, to get contact list of group.
+    * @param int $limit  - (optional) to get the list of records available per page. Default value for page is 10.
+    * @param int $page(   - (optional) to get the list of records from the respective pages. Default value for page is 1.
+    * @param string $order   - (optional) to get the list of records in 'desc' order by default.
+    * 
+    * @return array
     *****************************************************************************************/
     public function getContactList($groupid,$limit=10,$page=1,$order='desc')
     {
@@ -413,13 +470,13 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to create contact
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * grpname(mandatory)  - group name in which you want to create contact
-    * name(mandatory)     - contact name of the person
-    * number(mandatory)   - contact number of the person
+    * Used to create contact.
+    * 
+    * @param string $grpname(mandatory)  - group name in which you want to create contact.
+    * @param string $name(mandatory)     - contact name of the person.
+    * @param string $number(mandatory)   - contact number of the person.
+    * 
+    * @return array
     *****************************************************************************************/
     public function createContact($grpname,$name,$number)
     {
@@ -433,13 +490,13 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to edit contact
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * contactid(mandatory) - contact Number Id
-    * name(mandatory)      - contact Name of the person
-    * number(mandatory)    - contact Number of the person
+    * Used to edit contact.
+    * 
+    * @param int $contactid - (mandatory) contact Number Id.
+    * @param string $name      - (mandatory) contact Name of the person.
+    * @param string $number    - (mandatory) contact Number of the person.
+    * 
+    * @return array
     *****************************************************************************************/
     public function editContact($contactid,$name,$number)
     {
@@ -453,11 +510,11 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to delete contact
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * contactid(mandatory) - contact number id that wish you to delete
+    * Used to delete contact.
+    * 
+    * @param int $id - (mandatory) contact number id that wish you to delete.
+    * 
+    * @return array
     *****************************************************************************************/
     public function deleteContact($id)
     {
@@ -471,13 +528,13 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to import contact
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * sms_datas(mandatory)  - array of number and msg to create contact
-                              eg:array(array('person_name'=>'Ankit Sharma','number'=>'8999999999'));
-    * grpname(mandatory)    - group name to add contact
+    * Used to import contact.
+    *
+    * @param array $sms_datas - (mandatory) array of number and msg to create contact
+    *                            eg:array(array('person_name'=>'Ankit Sharma','number'=>'8999999999')).
+    * @param string $grpname  - (mandatory) group name to add contact.
+    * 
+    * @return array
     *****************************************************************************************/
     public function importXmlContact($sms_datas,$grpname)
     {
@@ -517,7 +574,9 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to retrieve template list * * * * * * * * *  * * * * * * * * * * * * * * * * * * * 
+    * Used to retrieve template list. 
+    * 
+    * @return array 
     *****************************************************************************************/
     public function getTemplateList()
     {
@@ -529,12 +588,12 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to create template
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * name(mandatory)  - template name
-    * text(mandatory)  - sms content of template without encoded
+    * Used to create template.
+    *
+    * @param string $name  - (mandatory) template name.
+    * @param string $text  - (mandatory) sms content of template without encoded.
+    * 
+    * @return array
     *****************************************************************************************/
     public function createTemplate($name,$text)
     {
@@ -548,13 +607,13 @@ XML;
     }
     
     /*****************************************************************************************
-    * used to edit template
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * name(mandatory)  - name of template
-    * text(mandatory)  - sms content of template without encoded
-    * id(mandatory)    - template id that you wish to edit
+    * Used to edit template.
+    *
+    * @param string $name  - (mandatory) name of template.
+    * @param string $text  - (mandatory) sms content of template without encoded.
+    * @param int $id    - (mandatory) template id that you wish to edit.
+    * 
+    * @return array
     *****************************************************************************************/
     public function editTemplate($name,$text,$id)
     {
@@ -568,11 +627,11 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to delete template
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * id(mandatory)    - template id that you wish to delete
+    * Used to delete template.
+    *
+    * @param int $id - (mandatory) template id that you wish to delete.
+    * 
+    * @return array
     *****************************************************************************************/
     public function deleteTemplate($id)
     {
@@ -586,7 +645,9 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to check balance * * * * * * * * *  * * * * * * * * * * * * * * * * * * * * * * * 
+    * Used to check balance. 
+    * 
+    * @return array 
     *****************************************************************************************/
     public function balanceCheck()
     {
@@ -598,14 +659,14 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to update profile
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * fname(mandatory)    - first name of user
-    * lname(mandatory)    - last name of user
-    * number(mandatory)   - mobile number of user
-    * emailid(mandatory)  - email id of user
+    * Used to update profile.
+    * 
+    * @param string $fname    - (mandatory) first name of user.
+    * @param string $lname    - (mandatory) last name of user.
+    * @param string $number   - (mandatory) mobile number of user.
+    * @param string $emailid  - (mandatory) email id of user.
+    * 
+    * @return array 
     *****************************************************************************************/
     public function updateProfile($fname,$lname,$number,$emailid)
     {
@@ -620,14 +681,14 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to generate otp
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * mobileno(mandatory)    - valid mobile number including country code without leading 0 or + symbol
-    *                          multiple numbers can be sent seperated by comma(,)
-    * template(mandatory)    - Template to be used for sending OTP, it is mandatory to include [otp] tag in 
-                               template content.
+    * Used to generate otp.
+    *
+    * @param string $mobileno - (mandatory)valid mobile number including country code without leading 0 or + symbol
+    *                            multiple numbers can be sent seperated by comma(,).
+    * @param string $template - (mandatory)Template to be used for sending OTP, it is mandatory to include [otp] tag in 
+    *                            template content.
+    * 
+    * @return array
     *****************************************************************************************/
     public function generateOtp($mobileno,$template)
     {
@@ -641,13 +702,13 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to validate otp
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * mobileno(mandatory)    - valid mobile number including country code without leading 0 or + symbol
-    *                          multiple numbers can be sent seperated by comma(,)
-    * otp(mandatory)         - OTP entered by the user
+    * Used to validate otp.
+    * 
+    * @param string $mobileno - (mandatory) valid mobile number including country code without leading 0 or + symbol
+    *                            multiple numbers can be sent seperated by comma(,).
+    * @param string $otp      - (mandatory) OTP entered by the user.
+    * 
+    * @return array
     *****************************************************************************************/
     public function validateOtp($mobileno,$otp)
     {
@@ -661,11 +722,11 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to create short url
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * url(mandatory)    - long url that you wish to shorten
+    * Used to create short url.
+    *
+    * @param string $longurl - (mandatory) long url that you wish to shorten.
+    * 
+    * @return array
     *****************************************************************************************/
     public function createShortUrl($longurl)
     {
@@ -679,11 +740,11 @@ XML;
     }
 
     /*****************************************************************************************
-    * used to delete short url
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * Parameters accepted
-    * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * 
-    * url(mandatory)    - short url id that you wish to delete
+    * Used to delete short url.
+    *
+    * @param string $urlid - (mandatory) short url id that you wish to delete.
+    * 
+    * @return array
     *****************************************************************************************/
     public function deleteShortUrl($urlid)
     {
@@ -697,7 +758,9 @@ XML;
     }
 	
 	/*****************************************************************************************
-    * get countries list
+    * Get countries list.
+    * 
+    * @return array
     *****************************************************************************************/
     public function getCountries()
     {
