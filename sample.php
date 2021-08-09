@@ -147,14 +147,7 @@ $result = $smsalert->pullReport($batchid);
 
 //============ For Balance Check ======================
 $result = $smsalert->balanceCheck(); 
-
-if($result['status'] == 'success')
-{
-	echo 'success';
-}
-else
-{
-	die('Error ');
-}
-
+echo "<pre>";
+print_r($result);
+echo "</pre>";
 ?>
