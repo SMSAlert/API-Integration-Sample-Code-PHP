@@ -445,11 +445,15 @@ XML;
 		if($shortenurl){$user->addAttribute('shortenurl', 1);}
 		
         foreach($sms_datas as $sms_data){
-            $sms     = $msg->addChild('sms');
-            $sms->addAttribute('text', $sms_data['sms_body']);
-            $address = $sms->addChild('address');
-            $address->addAttribute('from', $this->sender);
-            $address->addAttribute('to', $this->formatNumber($sms_data['number']));
+			
+            if (!empty($sms_data['sms_body']) && !empty($sms_data['number'])){
+                $sms     = $msg->addChild('sms');
+                $sms->addAttribute('text', $sms_data['sms_body']);
+                $address = $sms->addChild('address');
+                $address->addAttribute('from', $this->sender);
+                $address->addAttribute('to', $this->formatNumber($sms_data['number']));
+            }
+			
         }
         if($msg->count() <= 1)
         { return false; }         
