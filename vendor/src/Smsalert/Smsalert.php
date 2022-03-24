@@ -1011,6 +1011,33 @@ XML;
         $body     = json_decode($response->getBody(),TRUE);
         return $body;
     }
+	
+	/*****************************************************************************************
+	* Set custom endpoint
+    * 
+	* @params string $endpoint name of the endpoint
+    * @params array $datas data to be sent.
+    *
+    * @return string
+    *****************************************************************************************/
+	function setendpoint($endpoint, $datas = array())
+    {        
+        if(empty($endpoint))
+        {
+            $this->errors[]='you must enter the correct endpoint';
+        }           
+        $url      = $this->url.'/api/'.$endpoint.'.json';
+        $params   = $datas;
+        $user_auth = $this->getAuthParams();        
+        if($this->get_errors()){
+            return $this->get_errors();
+        }
+        $params   = array_merge($params,$user_auth,$this->getOptions());     
+        $client   = new Client();
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+        $body     = json_decode($response->getBody(),TRUE); 
+        return $body;
+    }
     
 	
 }
