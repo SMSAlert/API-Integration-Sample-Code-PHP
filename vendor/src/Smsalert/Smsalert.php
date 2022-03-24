@@ -376,11 +376,12 @@ class Smsalert{
     *****************************************************************************************/
     public function getSenderId()
     {
-		$params   = array_merge($this->getAuthParams(),$this->getOptions());
-		if($this->get_errors()){
-			return $this->get_errors();
-		}
-		$url      = $this->url.'/api/senderlist.json';
+        $user_auth = $this->getAuthParams();
+        if($this->get_errors()){
+            return $this->get_errors();
+        }
+		$params   = array_merge($user_auth,$this->getOptions());
+        $url      = $this->url.'/api/senderlist.json';
         $client   = new Client();
         $response = $client->request('POST', $url, ['json' => $params,'http_errors'=>false]);
         $body     = json_decode($response->getBody(),TRUE); 
@@ -394,11 +395,12 @@ class Smsalert{
     *****************************************************************************************/
     public function getUserProfile()
     {
-		$params   = array_merge($this->getAuthParams(),$this->getOptions());
-		if($this->get_errors()){
-			return $this->get_errors();
-		}
-        $url      = $this->url.'/api/user.json';
+		$user_auth = $this->getAuthParams();
+        if($this->get_errors()){
+            return $this->get_errors();
+        }
+		$params   = array_merge($user_auth,$this->getOptions());
+		$url      = $this->url.'/api/user.json';
         $client   = new Client();
         $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
