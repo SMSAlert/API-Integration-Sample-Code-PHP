@@ -376,11 +376,12 @@ class Smsalert{
     *****************************************************************************************/
     public function getSenderId()
     {
-		$params   = array_merge($this->getAuthParams(),$this->getOptions());
-		if($this->get_errors()){
-			return $this->get_errors();
-		}
-		$url      = $this->url.'/api/senderlist.json';
+        $user_auth = $this->getAuthParams();
+        if($this->get_errors()){
+            return $this->get_errors();
+        }
+		$params   = array_merge($user_auth,$this->getOptions());
+        $url      = $this->url.'/api/senderlist.json';
         $client   = new Client();
         $response = $client->request('POST', $url, ['json' => $params,'http_errors'=>false]);
         $body     = json_decode($response->getBody(),TRUE); 
@@ -394,11 +395,12 @@ class Smsalert{
     *****************************************************************************************/
     public function getUserProfile()
     {
-		$params   = array_merge($this->getAuthParams(),$this->getOptions());
-		if($this->get_errors()){
-			return $this->get_errors();
-		}
-        $url      = $this->url.'/api/user.json';
+		$user_auth = $this->getAuthParams();
+        if($this->get_errors()){
+            return $this->get_errors();
+        }
+		$params   = array_merge($user_auth,$this->getOptions());
+		$url      = $this->url.'/api/user.json';
         $client   = new Client();
         $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE); 
@@ -1009,6 +1011,33 @@ XML;
         $client   = new Client();
         $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
         $body     = json_decode($response->getBody(),TRUE);
+        return $body;
+    }
+	
+	/*****************************************************************************************
+	* Set custom endpoint
+    * 
+	* @params string $endpoint name of the endpoint
+    * @params array $datas data to be sent.
+    *
+    * @return string
+    *****************************************************************************************/
+	function setendpoint($endpoint, $datas = array())
+    {        
+        if(empty($endpoint))
+        {
+            $this->errors[]='you must enter the correct endpoint';
+        }           
+        $url      = $this->url.'/api/'.$endpoint.'.json';
+        $params   = $datas;
+        $user_auth = $this->getAuthParams();        
+        if($this->get_errors()){
+            return $this->get_errors();
+        }
+        $params   = array_merge($params,$user_auth,$this->getOptions());     
+        $client   = new Client();
+        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+        $body     = json_decode($response->getBody(),TRUE); 
         return $body;
     }
     
