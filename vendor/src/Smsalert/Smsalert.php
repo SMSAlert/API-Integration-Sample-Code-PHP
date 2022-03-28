@@ -194,7 +194,7 @@ class Smsalert{
             {           
                 foreach($nos as $no){
                     $no         = ltrim($no,'0');
-                    $no         = (substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
+                    $no         = (!empty($prefix) && substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
                     $valid_no[] = $no;  
                 }
             }
