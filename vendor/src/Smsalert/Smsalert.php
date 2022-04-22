@@ -122,11 +122,6 @@ class Smsalert{
 		{
 			$this->options = $datas;
 		}
-		
-		if(empty($this->options))
-		{
-			$this->options = array("plugin"=>'woocommerce',"website"=>$_SERVER['HTTP_HOST']);
-		}
 		return $this;
 	 }
 	 
@@ -1022,7 +1017,7 @@ XML;
     *
     * @return string
     *****************************************************************************************/
-	function setendpoint($endpoint, $datas = array())
+	function invokecustom($endpoint, $datas = array())
     {        
         if(empty($endpoint))
         {
