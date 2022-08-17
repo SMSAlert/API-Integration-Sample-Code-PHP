@@ -181,7 +181,11 @@ class Smsalert{
     *****************************************************************************************/
     private function formatNumber($mobileno)
     {    
-         $prefix   = $this->prefix;
+         $prefix   = "";	 
+	 if(substr($mobileno, 0, 1) != '+')
+	 {
+	    $prefix   = $this->prefix;
+	 }
          $mobileno = explode(',',$mobileno);
          $nos      = preg_replace('/[^0-9]/', '', $mobileno);
          $valid_no = array();
