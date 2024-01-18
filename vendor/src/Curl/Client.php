@@ -7,7 +7,7 @@ Class Client{
 	
 	public function request($method="GET",$url=null,$params=array(), $headers=array(), $curl_opts=array())
 	{
-		$params 		= (!empty($params['json']))?$params['json'] : $params['query'];
+		$params 	= (!empty($params['json']))?$params['json'] : (!empty($params['query'])?$params['query']:array());
 		$http_errors    = (!empty($params['http_errors'])) ? $params['http_errors']:false;
 		
 		if(strtolower($method)!='post')
@@ -30,12 +30,13 @@ Class Client{
 			foreach($curl_opts as $curl_opt => $curl_val){curl_setopt($ch, $curl_opt, $curl_val);}
 		}
 		$this->response = curl_exec($ch);
+		$http_code 	= curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		
 		if ($http_errors && curl_errno($ch)) { 
-			$this->$response = curl_error($ch); 
+			$this->response = curl_error($ch); 
 		} 
 		curl_close($ch);
-		return new Responses($this->response);
+		return new Responses($this->response, $http_code);
 	}
 	
 }
