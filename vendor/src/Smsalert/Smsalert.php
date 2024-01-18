@@ -181,24 +181,24 @@ class Smsalert{
     *****************************************************************************************/
     private function formatNumber($mobileno)
     {    
-	$prefix   = "";
-		 
-	if(substr($mobileno, 0, 1) != '+')
-	{
-           $prefix   = $this->prefix;
-	 }
-         $mobileno = explode(',',$mobileno);
-         $nos      = preg_replace('/[^0-9]/', '', $mobileno);
-         $valid_no = array();
-         if(is_array($nos))
-            {           
-                foreach($nos as $no){
-                    $no         = ltrim($no,'0');
-                    $no         = (!empty($prefix) && substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
-                    $valid_no[] = $no;  
-                }
-            }
-         return $num =implode(',', $valid_no);           
+		$prefix   = "";
+
+		if(substr($mobileno, 0, 1) != '+')
+		{
+			$prefix   = $this->prefix;
+		}
+		$mobileno = explode(',',$mobileno);
+		$nos      = preg_replace('/[^0-9]/', '', $mobileno);
+		$valid_no = array();
+		if(is_array($nos))
+		{           
+			foreach($nos as $no){
+				$no         = ltrim($no,'0');
+				$no         = (!empty($prefix) && substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
+				$valid_no[] = $no;  
+			}
+		}
+		return $num =implode(',', $valid_no);           
     }
 
     /*****************************************************************************************
@@ -229,7 +229,7 @@ class Smsalert{
     *****************************************************************************************/
     public function send($mobileno,$text,$schedule=null,$reference=null,$dlrurl=null,$shortenurl=false)
     {   
-        if(empty($mobileno))
+		if(empty($mobileno))
 		{
 			$this->errors[]='Mobile number is missing';
 		}
@@ -237,45 +237,45 @@ class Smsalert{
 		{
 			$this->errors[]='sms text is missing';
 		}
-		
+
 		$url    = $this->url.'/api/push.json';
-        $params = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);
-		
-		
+		$params = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'text'=>$text);
+
+
 
 		if($shortenurl){$params['shortenurl'] = 1;}		
-        if(!empty($schedule))
-        {   
-            $params['schedule'] = $schedule; // for Schedule Sms 
-        }
-        if(!empty($this->route))
-        {
-            $params['route']    = $this->route; 
-        }
-        if(!empty($dlrurl)) // for push report
-        {
-            $dlrurl             = (parse_url($dlrurl, PHP_URL_HOST) == 'localhost') ? urlencode($dlrurl) : $dlrurl;
-            $params['dlrurl']   = $dlrurl;
-            if(!empty($reference))
-            {
-                $params['reference'] = $reference; 
-            }
-            else{
-               $this->errors[]='you must use reference parameter to use DLR callback url';
+		if(!empty($schedule))
+		{   
+			$params['schedule'] = $schedule; // for Schedule Sms 
+		}
+		if(!empty($this->route))
+		{
+			$params['route']    = $this->route; 
+		}
+		if(!empty($dlrurl)) // for push report
+		{
+			$dlrurl             = (parse_url($dlrurl, PHP_URL_HOST) == 'localhost') ? urlencode($dlrurl) : $dlrurl;
+			$params['dlrurl']   = $dlrurl;
+			if(!empty($reference))
+			{
+				$params['reference'] = $reference; 
+			}
+			else{
+			   $this->errors[]='you must use reference parameter to use DLR callback url';
 			}   
-        }
+		}
 		$user_auth = $this->getAuthParams();
 		if($this->get_errors())
 		{
 			return $this->get_errors();
 		}
 		$params   = array_merge($params,$user_auth,$this->getOptions());
-		
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-	$body     			= json_decode($response->getBody(),TRUE);
-        $body['response_code']     	= $response->getStatusCode();  
-        return $body;
+
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     			= json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();  
+		return $body;
     }
     
     /*****************************************************************************************
@@ -289,18 +289,18 @@ class Smsalert{
     *****************************************************************************************/
     public function editSchedule($batchid,$schedule)
     {
-        $url      = $this->url.'/api/modifyschedule.json';
-        $params   = array('batchid'=>$batchid,'schedule'=>$schedule);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/modifyschedule.json';
+		$params   = array('batchid'=>$batchid,'schedule'=>$schedule);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
 		$params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;  
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;  
     }
 
     /*****************************************************************************************
@@ -312,18 +312,18 @@ class Smsalert{
     *****************************************************************************************/
     public function cancelSchedule($batchid)
     {
-        $url 	  = $this->url.'/api/cancelschedule.json';
-        $params   = array('batchid'=>$batchid);
-        $user_auth = $this->getAuthParams();
+		$url 	  = $this->url.'/api/cancelschedule.json';
+		$params   = array('batchid'=>$batchid);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
 		$params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;  
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;  
     }
 
     /*****************************************************************************************
@@ -337,18 +337,18 @@ class Smsalert{
     *****************************************************************************************/
     public function smsReport($limit=10,$page=1,$schedule=1)
     {
-        $url      = $this->url.'/api/smscampaignlog.json';
-        $params   = array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
-        $user_auth= $this->getAuthParams();
+		$url      = $this->url.'/api/smscampaignlog.json';
+		$params   = array('limit'=>$limit,'page'=>$page,'schedule'=>$schedule);
+		$user_auth= $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
 		$params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;  
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;  
     }
 
     /*****************************************************************************************
@@ -360,18 +360,18 @@ class Smsalert{
     *****************************************************************************************/
     public function pullReport($batchid)
     {   
-        $url      = $this->url.'/api/pull.json';
-        $params   = array('batchid'=>$batchid);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/pull.json';
+		$params   = array('batchid'=>$batchid);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
 		$params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;   
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;   
     }
 
     /*****************************************************************************************
@@ -381,17 +381,17 @@ class Smsalert{
     *****************************************************************************************/
     public function getSenderId()
     {
-        $user_auth = $this->getAuthParams();
-        if($this->get_errors()){
-            return $this->get_errors();
-        }
+		$user_auth = $this->getAuthParams();
+		if($this->get_errors()){
+			return $this->get_errors();
+		}
 		$params   = array_merge($user_auth,$this->getOptions());
-        $url      = $this->url.'/api/senderlist.json';
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params,'http_errors'=>false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;  
+		$url      = $this->url.'/api/senderlist.json';
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params,'http_errors'=>false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;  
     }
 
     /*****************************************************************************************
@@ -402,16 +402,16 @@ class Smsalert{
     public function getUserProfile()
     {
 		$user_auth = $this->getAuthParams();
-        if($this->get_errors()){
-            return $this->get_errors();
-        }
+		if($this->get_errors()){
+			return $this->get_errors();
+		}
 		$params   = array_merge($user_auth,$this->getOptions());
 		$url      = $this->url.'/api/user.json';
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -426,54 +426,54 @@ class Smsalert{
     public  function sendSmsXml($sms_datas,$shortenurl=false,$schedule=null)
 	{ 
 		if(is_array($sms_datas) && sizeof($sms_datas) == 0)
-        {return false;}
+		{return false;}
 $xmlstr = <<<XML
 <?xml version='1.0' encoding='UTF-8'?>
 <message>
 </message>
 XML;
-        $msg  = new \SimpleXMLElement($xmlstr);
-        $user = $msg->addChild('user');
-        if (array_key_exists("apikey",$this->authParams))
-        {
-            $user->addAttribute('apikey', $this->authParams['apikey']);  
-        }else{
-            $user->addAttribute('username', $this->authParams['user']);
-            $user->addAttribute('password', $this->authParams['pwd']); 
-        } 
+		$msg  = new \SimpleXMLElement($xmlstr);
+		$user = $msg->addChild('user');
+		if (array_key_exists("apikey",$this->authParams))
+		{
+			$user->addAttribute('apikey', $this->authParams['apikey']);  
+		}else{
+			$user->addAttribute('username', $this->authParams['user']);
+			$user->addAttribute('password', $this->authParams['pwd']); 
+		} 
 		if(!empty($this->route))
 		{
 			$user->addAttribute('route', $this->route);
 		}
-		
+
 		if(!empty($schedule))
 		{
 			$user->addAttribute('schedule', $schedule); 
 		}
-		
+
 		if($shortenurl){$user->addAttribute('shortenurl', 1);}
-		
-        foreach($sms_datas as $sms_data){
+
+		foreach($sms_datas as $sms_data){
 			
-            if (!empty($sms_data['sms_body']) && !empty($sms_data['number'])){
-                $sms     = $msg->addChild('sms');
-                $sms->addAttribute('text', $sms_data['sms_body']);
-                $address = $sms->addChild('address');
-                $address->addAttribute('from', $this->sender);
-                $address->addAttribute('to', $this->formatNumber($sms_data['number']));
-            }
+			if (!empty($sms_data['sms_body']) && !empty($sms_data['number'])){
+				$sms     = $msg->addChild('sms');
+				$sms->addAttribute('text', $sms_data['sms_body']);
+				$address = $sms->addChild('address');
+				$address->addAttribute('from', $this->sender);
+				$address->addAttribute('to', $this->formatNumber($sms_data['number']));
+			}
 			
-        }
-        if($msg->count() <= 1)
-        { return false; }         
-        $xmldata  = $msg->asXML();
-        $url      = $this->url.'/api/xmlpush.json';
-        $params   = array('data'=>$xmldata,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		}
+		if($msg->count() <= 1)
+		{ return false; }         
+		$xmldata  = $msg->asXML();
+		$url      = $this->url.'/api/xmlpush.json';
+		$params   = array('data'=>$xmldata,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -487,18 +487,18 @@ XML;
     *****************************************************************************************/
     public function getGroupList($limit=10,$page=1,$order='desc')
     {
-        $url      = $this->url.'/api/grouplist.json';
-        $params   = array('limit'=>$limit,'page'=>$page,'order'=>$order);
+		$url      = $this->url.'/api/grouplist.json';
+		$params   = array('limit'=>$limit,'page'=>$page,'order'=>$order);
 		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -510,18 +510,18 @@ XML;
     *****************************************************************************************/
     public function createGroup($grpname)
     {
-        $url      = $this->url.'/api/creategroup.json';
-        $params   = array('name'=>$grpname);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/creategroup.json';
+		$params   = array('name'=>$grpname);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -533,18 +533,18 @@ XML;
     *****************************************************************************************/
     public function deleteGroup($grpid)
     {
-        $url      = $this->url.'/api/deletegroup.json';
-        $params   = array('id'=>$grpid);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/deletegroup.json';
+		$params   = array('id'=>$grpid);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -557,18 +557,18 @@ XML;
      *****************************************************************************************/
     public function editGroup($grpname,$grpid)
     {
-        $url      = $this->url.'/api/updategroup.json';
-        $params   = array('id'=>$grpid,'name'=>$grpname);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/updategroup.json';
+		$params   = array('id'=>$grpid,'name'=>$grpname);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -583,19 +583,19 @@ XML;
     *****************************************************************************************/
     public function sendGroupSms($grpid,$text,$schedule=null)
     {
-        $url             = $this->url.'/api/grouppush.json';
-        $params          = array('id'=>$grpid,'text'=>$text,'schedule'=>$schedule,'sender'=>$this->sender);
-        $params['route'] = !empty($this->route) ? $this->route : '';
-        $user_auth = $this->getAuthParams();
+		$url             = $this->url.'/api/grouppush.json';
+		$params          = array('id'=>$grpid,'text'=>$text,'schedule'=>$schedule,'sender'=>$this->sender);
+		$params['route'] = !empty($this->route) ? $this->route : '';
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client          = new Client();
-        $response        = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body            = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client          = new Client();
+		$response        = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body            = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -610,18 +610,18 @@ XML;
     *****************************************************************************************/
     public function getContactList($groupid,$limit=10,$page=1,$order='desc')
     {
-        $url      = $this->url.'/api/contactlist.json';
-        $params   = array('group_id'=>$groupid,'limit'=>$limit,'page'=>$page,'order'=>$order);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/contactlist.json';
+		$params   = array('group_id'=>$groupid,'limit'=>$limit,'page'=>$page,'order'=>$order);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -635,18 +635,18 @@ XML;
     *****************************************************************************************/
     public function createContact($grpname,$name,$number)
     {
-        $url      = $this->url.'/api/createcontact.json';
-        $params   = array('grpname'=>$grpname,'name'=>$name,'number'=>$this->formatNumber($number));
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/createcontact.json';
+		$params   = array('grpname'=>$grpname,'name'=>$name,'number'=>$this->formatNumber($number));
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -660,18 +660,18 @@ XML;
     *****************************************************************************************/
     public function editContact($contactid,$name,$number)
     {
-        $url      = $this->url.'/api/updatecontact.json';
-        $params   = array('id'=>$contactid,'name'=>$name,'number'=>$this->formatNumber($number));
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/updatecontact.json';
+		$params   = array('id'=>$contactid,'name'=>$name,'number'=>$this->formatNumber($number));
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -683,18 +683,18 @@ XML;
     *****************************************************************************************/
     public function deleteContact($id)
     {
-        $url      = $this->url.'/api/deletecontact.json';
-        $params   = array('id'=>$id);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/deletecontact.json';
+		$params   = array('id'=>$id);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -708,40 +708,40 @@ XML;
     *****************************************************************************************/
     public function importXmlContact($sms_datas,$grpname)
     {
-       if(is_array($sms_datas) && sizeof($sms_datas) == 0)
-        {return false;}
-        $xmlstr = <<<XML
+		if(is_array($sms_datas) && sizeof($sms_datas) == 0)
+		{return false;}
+		$xmlstr = <<<XML
 <?xml version='1.0' encoding='UTF-8'?>
 <group>
 </group>
 XML;
-        $msg   = new \SimpleXMLElement($xmlstr);
-        $user  = $msg->addChild('user');
-        if (array_key_exists("apikey",$this->authParams))
-        {
-            $user->addAttribute('apikey', $this->authParams['apikey']);  
-        }else{
-            $user->addAttribute('username', $this->authParams['user']);
-            $user->addAttribute('password', $this->authParams['pwd']); 
-        }  
-        $user->addAttribute('grp_name',$grpname);
-        $members = $msg->addChild('members');
-        foreach($sms_datas as $sms_data)
-        {
-            $member = $members->addChild('member');
-            $member->addAttribute('name', $sms_data['person_name']);
-            $member->addAttribute('number', $sms_data['number']);
-        }   
-        if($msg->count() <= 1)
-        { return false; }         
-        $xmldata = $msg->asXML();
-        $url     = $this->url.'/api/createcontactxml.json';
-        $params  = array('data'=>$xmldata,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$msg   = new \SimpleXMLElement($xmlstr);
+		$user  = $msg->addChild('user');
+		if (array_key_exists("apikey",$this->authParams))
+		{
+			$user->addAttribute('apikey', $this->authParams['apikey']);  
+		}else{
+			$user->addAttribute('username', $this->authParams['user']);
+			$user->addAttribute('password', $this->authParams['pwd']); 
+		}  
+		$user->addAttribute('grp_name',$grpname);
+		$members = $msg->addChild('members');
+		foreach($sms_datas as $sms_data)
+		{
+			$member = $members->addChild('member');
+			$member->addAttribute('name', $sms_data['person_name']);
+			$member->addAttribute('number', $sms_data['number']);
+		}   
+		if($msg->count() <= 1)
+		{ return false; }         
+		$xmldata = $msg->asXML();
+		$url     = $this->url.'/api/createcontactxml.json';
+		$params  = array('data'=>$xmldata,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -755,13 +755,13 @@ XML;
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($user_auth,$this->getOptions());
-        $url      = $this->url.'/api/templatelist.json';      
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($user_auth,$this->getOptions());
+		$url      = $this->url.'/api/templatelist.json';      
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -774,18 +774,18 @@ XML;
     *****************************************************************************************/
     public function createTemplate($name,$text)
     {
-        $url      = $this->url.'/api/createtemplate.json'; 
-        $params   = array('name'=>$name,'text'=>$text);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/createtemplate.json'; 
+		$params   = array('name'=>$name,'text'=>$text);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());     
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());     
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
     
     /*****************************************************************************************
@@ -799,18 +799,18 @@ XML;
     *****************************************************************************************/
     public function editTemplate($name,$text,$id)
     {
-        $url      = $this->url.'/api/updatetemplate.json'; 
-        $params   = array('name'=>$name,'text'=>$text,'id'=>$id);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/updatetemplate.json'; 
+		$params   = array('name'=>$name,'text'=>$text,'id'=>$id);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions());     
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions());     
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -822,18 +822,18 @@ XML;
     *****************************************************************************************/
     public function deleteTemplate($id)
     {
-        $url      = $this->url.'/api/deletetemplate.json'; 
-        $params   = array('id'=>$id);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/deletetemplate.json'; 
+		$params   = array('id'=>$id);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;    
+		$params   = array_merge($params,$user_auth,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;    
     }
 
     /*****************************************************************************************
@@ -847,13 +847,13 @@ XML;
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($user_auth,$this->getOptions());
-        $url      = $this->url.'/api/creditstatus.json';
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($user_auth,$this->getOptions());
+		$url      = $this->url.'/api/creditstatus.json';
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -868,19 +868,19 @@ XML;
     *****************************************************************************************/
     public function updateProfile($fname,$lname,$number,$emailid)
     {
-        $url      = $this->url.'/api/updateprofile.json';
-        $params   = array('firstname'=>$fname,'lastname'=>$lname,
-        			'mobilenumber'=>$this->formatNumber($number),'emailid'=>$emailid);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/updateprofile.json';
+		$params   = array('firstname'=>$fname,'lastname'=>$lname,
+					'mobilenumber'=>$this->formatNumber($number),'emailid'=>$emailid);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body; 
+		$params   = array_merge($params,$user_auth,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body; 
     }
 
     /*****************************************************************************************
@@ -895,18 +895,18 @@ XML;
     *****************************************************************************************/
     public function generateOtp($mobileno,$template)
     {
-        $url 	  = $this->url.'/api/mverify.json';
-        $params   = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'template'=>$template);
-        $user_auth = $this->getAuthParams();
+		$url 	  = $this->url.'/api/mverify.json';
+		$params   = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'template'=>$template);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body 	  = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body 	  = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -920,18 +920,18 @@ XML;
     *****************************************************************************************/
     public function validateOtp($mobileno,$otp)
     {
-        $url      = $this->url.'/api/mverify.json';
-        $params   = array('code'=>$otp,'mobileno'=>$this->formatNumber($mobileno));
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/mverify.json';
+		$params   = array('code'=>$otp,'mobileno'=>$this->formatNumber($mobileno));
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -943,18 +943,18 @@ XML;
     *****************************************************************************************/
     public function createShortUrl($longurl)
     {
-        $url      = $this->url.'/api/createshorturl.json';
-        $params   = array('url'=>$longurl);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/createshorturl.json';
+		$params   = array('url'=>$longurl);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 
     /*****************************************************************************************
@@ -966,18 +966,18 @@ XML;
     *****************************************************************************************/
     public function deleteShortUrl($urlid)
     {
-        $url      = $this->url.'/api/deleteshorturl.json';
-        $params   = array('id'=>$urlid);
-        $user_auth = $this->getAuthParams();
+		$url      = $this->url.'/api/deleteshorturl.json';
+		$params   = array('id'=>$urlid);
+		$user_auth = $this->getAuthParams();
 		if($this->get_errors()){
 			return $this->get_errors();
 		}
-        $params   = array_merge($params,$user_auth,$this->getOptions()); 
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$params   = array_merge($params,$user_auth,$this->getOptions()); 
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 	
 	/*****************************************************************************************
@@ -992,13 +992,13 @@ XML;
 		{
 			return $this->get_errors();
 		}
-        $params   = array_merge($user_auth,$this->getOptions());
+		$params   = array_merge($user_auth,$this->getOptions());
 		$url      = $this->url.'/api/countrylist.json';
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params,'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params,'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
     /*****************************************************************************************
     * Get Formatted Number.
@@ -1022,26 +1022,26 @@ XML;
     *****************************************************************************************/
     public function structuredpush($structure_id, $mobileno, $datas=array(),$schedule=null)
     {
-        $url      = $this->url.'/api/structuredpush.json';
-        $params   = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'structureid'=>$structure_id,'data'=>$datas);
-        if(!empty($this->route))
-        {
-            $params['route']    = $this->route; 
-        }
-        if(!empty($schedule))
-        {   
-            $params['schedule'] = $schedule; // for Schedule Sms 
-        }
-        $user_auth = $this->getAuthParams();
-        if($this->get_errors()){
-            return $this->get_errors();
-        }       
-        $params   = array_merge($params,$user_auth);
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		$url      = $this->url.'/api/structuredpush.json';
+		$params   = array('sender'=>$this->sender,'mobileno'=>$this->formatNumber($mobileno),'structureid'=>$structure_id,'data'=>$datas);
+		if(!empty($this->route))
+		{
+			$params['route']    = $this->route; 
+		}
+		if(!empty($schedule))
+		{   
+			$params['schedule'] = $schedule; // for Schedule Sms 
+		}
+		$user_auth = $this->getAuthParams();
+		if($this->get_errors()){
+			return $this->get_errors();
+		}       
+		$params   = array_merge($params,$user_auth);
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
 	
 	/*****************************************************************************************
@@ -1054,22 +1054,22 @@ XML;
     *****************************************************************************************/
 	function invokecustom($endpoint, $datas = array())
     {        
-        if(empty($endpoint))
-        {
-            $this->errors[]='you must enter the correct endpoint';
-        }           
-        $url      = $this->url.'/api/'.$endpoint.'.json';
-        $params   = $datas;
-        $user_auth = $this->getAuthParams();        
-        if($this->get_errors()){
-            return $this->get_errors();
-        }
-        $params   = array_merge($params,$user_auth,$this->getOptions());     
-        $client   = new Client();
-        $response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
-        $body     = json_decode($response->getBody(),TRUE);
-	$body['response_code']     	= $response->getStatusCode();
-        return $body;
+		if(empty($endpoint))
+		{
+			$this->errors[]='you must enter the correct endpoint';
+		}           
+		$url      = $this->url.'/api/'.$endpoint.'.json';
+		$params   = $datas;
+		$user_auth = $this->getAuthParams();        
+		if($this->get_errors()){
+			return $this->get_errors();
+		}
+		$params   = array_merge($params,$user_auth,$this->getOptions());     
+		$client   = new Client();
+		$response = $client->request('POST', $url, ['json' => $params, 'http_errors' => false]);
+		$body     = json_decode($response->getBody(),TRUE);
+		$body['response_code']     	= $response->getStatusCode();
+		return $body;
     }
     
 	
