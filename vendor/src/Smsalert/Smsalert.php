@@ -134,7 +134,7 @@ class Smsalert{
     *****************************************************************************************/
     public function getOptions()
     {
-		$default_options = array("plugin"=>'shopify',"website"=>$_SERVER['HTTP_HOST']);
+		$default_options = array("plugin"=>'php-lib',"website"=>$_SERVER['HTTP_HOST']);
 		$this->options=array_merge($default_options,$this->options);
 		return $this->options;
 	 }
