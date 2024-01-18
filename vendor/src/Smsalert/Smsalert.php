@@ -171,35 +171,6 @@ class Smsalert{
 			return false;
 		}
 	}
-    
-    /*****************************************************************************************
-    * Internal function for format number to be used only for this class.   
-    * 
-    * @param string $mobileno - Mobile number
-    *
-    * @return string
-    *****************************************************************************************/
-    private function formatNumber($mobileno)
-    {    
-		$prefix   = "";
-
-		if(substr($mobileno, 0, 1) != '+')
-		{
-			$prefix   = $this->prefix;
-		}
-		$mobileno = explode(',',$mobileno);
-		$nos      = preg_replace('/[^0-9]/', '', $mobileno);
-		$valid_no = array();
-		if(is_array($nos))
-		{           
-			foreach($nos as $no){
-				$no         = ltrim($no,'0');
-				$no         = (!empty($prefix) && substr($no,0,strlen($prefix))!=$prefix) ? $prefix.$no : $no;
-				$valid_no[] = $no;  
-			}
-		}
-		return $num =implode(',', $valid_no);           
-    }
 
     /*****************************************************************************************
     * Set force prefix to be used only for this class.
